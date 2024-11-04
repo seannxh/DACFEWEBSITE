@@ -3,7 +3,7 @@ const BACKEND_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
 
 export const signup = async (formData) => {
     try{
-        const res = await fetch(`${BACKEND_URL}/users/signup`, {
+        const res = await fetch(`${BACKEND_URL}/signup`, {
             method: "POST", //type
             headers: {"Content-Type": 'application/json'},//tells them what sort of data were gonna be sendign were gonna be sendign a json data
             body: JSON.stringify(formData)//this ables this postman to send javascript body formdata to db
@@ -31,7 +31,7 @@ export const getUser = () => {
 //we need to pass formdata for signup and signin because we need the formdata to post and its being passed at signup.jsx and signin.jsx and as signup(formData)
 export const signin = async (formData) => {
     try{
-        const res = await fetch(`${BACKEND_URL}/users/signin`, {
+        const res = await fetch(`${BACKEND_URL}/signin`, {
             method: "POST", //type
             headers: {"Content-Type": 'application/json'},//tells them what sort of data were gonna be sendign were gonna be sendign a json data
             body: JSON.stringify(formData)//this ables this postman to send javascript body formdata to db

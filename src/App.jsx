@@ -63,8 +63,8 @@ const [token, setToken] = useState(getUser());
     <>
       <NavBar token={token} setToken={setToken}/>
       <Routes>
-        <Route path="/signup" element={<Signup setToken={setToken}/>}/>
-        <Route path="/signin" element={<Signin setToken={setToken}/>}/>
+        <Route path="/users/signup" element={<Signup setToken={setToken}/>}/>
+        <Route path="/users/signin" element={<Signin setToken={setToken}/>}/>
         <Route path="/menuform" element={<MenuForm/>}/>
       </Routes>
     </>
