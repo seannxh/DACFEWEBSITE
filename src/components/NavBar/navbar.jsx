@@ -12,6 +12,23 @@ const NavBar = (props) => {
                     {/* {if there is a user token i just want a sign ouit link} */}
                     {props.token ? 
                     <>
+                    <div>
+                        <li>
+                            <Link to="/home">
+                                Home
+                            </Link>
+                        </li>
+                    <li>
+                        <Link to="/viewmenu">
+                            View Menu
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/contactus">
+                            Contact Us
+                        </Link>
+                    </li>
+                    </div>
                         <li>
                             <Link onClick={() => {signout()
                             // when signed out it makes the token null
@@ -22,22 +39,34 @@ const NavBar = (props) => {
                         </li>
                     </>
                     :
+                    //LOGO HERE 
                     <>
+                    <div>
                         <li>
                             <Link to="/home">
                                 Home
                             </Link>
                         </li>
-                    <li>
-                        <Link to="/menu">
-                            Menu
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/contactus">
-                            Contact Us
-                        </Link>
-                    </li>
+                    </div>
+                    <div>
+                        <li>
+                             <Link to="/users/signup">
+                                Sign Up
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/users/signin">
+                                Sign In
+                            </Link>
+                        </li>
+                        <div>
+                            <li>
+                                <Link to="/contactus">
+                                    Contact Us
+                                </Link>
+                            </li>
+                        </div>
+                    </div>
                 </>
                 }
                     {/* {if there is not a user token i just want a sign in and signout link} */}

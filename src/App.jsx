@@ -1,10 +1,13 @@
-import { useState, useEffect } from 'react'
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { useState, useEffect, createContext } from 'react'
+import { Route, Routes, useNavigate, Navigate } from 'react-router-dom';
 import Signup from "./components/Signup/signup.jsx"
 import Signin from './components/Signin/signin.jsx'
 import { getUser } from "./services/authService.js"
 import NavBar from './components/NavBar/navbar.jsx'
+import ContactUs from './components/ContactUs/Contactus.jsx';
 import MenuForm from './components/Menuform/Menuform.jsx';
+import Home from "./components/Home/Home.jsx"
+import ViewMenu from './components/ViewMenu/Viewmenu.jsx';
 import { index, Create , deleteMenu, update } from "./services/menuService.js"
 
 
@@ -12,6 +15,8 @@ const App = () => {
 const [token, setToken] = useState(getUser());
   const [menus, setMenus] = useState([]);
   const navigate = useNavigate();
+
+  const AuthedUserContext = createContext(null);
 
   useEffect(() => {
     const fetchTracks = async () => {
@@ -61,14 +66,30 @@ const [token, setToken] = useState(getUser());
 
   return (
     <>
-      <NavBar token={token} setToken={setToken}/>
-      <Routes>
-        <Route path="/users/signup" element={<Signup setToken={setToken}/>}/>
-        <Route path="/users/signin" element={<Signin setToken={setToken}/>}/>
-        <Route path="/menuform" element={<MenuForm/>}/>
-      </Routes>
+      <AuthedUserContext.Provider value={token}>
+        <NavBar token={token} setToken={setToken}/>
+        <Routes>
+          {token ? (
+            <>
+              <Route path="/home" element={<Home token={token}/>}/>
+              <Route path="/" element={<Navigate to="/home" replace />} />
+              <Route path="/menuform" element={<MenuForm/>}/>
+              <Route path="/viewmenu" element={<ViewMenu/>}/>
+              <Route path="/contactus" element={<ContactUs/>}/>
+            </>
+          ) : (
+            <>
+              <Route path="/home" element={<Home/>}/>
+              <Route path="/" element={<Navigate to="/home" replace />} />
+              <Route path="/contactus" element={<ContactUs/>}/>
+            </>
+          )}
+          <Route path="/users/signup" element={<Signup setToken={setToken}/>}/>
+          <Route path="/users/signin" element={<Signin setToken={setToken}/>}/>
+        </Routes>
+      </AuthedUserContext.Provider>
     </>
-  )
+  );
 }
 
 export default App
