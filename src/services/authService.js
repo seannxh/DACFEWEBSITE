@@ -1,50 +1,63 @@
 //function call to our backend
+import { jwtDecode } from "jwt-decode";
+
 const BACKEND_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
 
 export const signup = async (formData) => {
     try{
         const res = await fetch(`${BACKEND_URL}/signup`, {
-            method: "POST", //type
-            headers: {"Content-Type": 'application/json'},//tells them what sort of data were gonna be sendign were gonna be sendign a json data
-            body: JSON.stringify(formData)//this ables this postman to send javascript body formdata to db
+            method: "POST",
+            headers: {"Content-Type": 'application/json'},
+            body: JSON.stringify(formData)
         })
 
         const json = await res.json();
-        if(json.error){//error handling
+        if(json.error){
             throw new Error(json.error)
         }
         localStorage.setItem('token', json.token)
         return json;
     }catch(err){
-        throw new Error(err)//using backend res.status to throw error
+        throw new Error(err)
     }
 }
 
 
 export const getUser = () => {
-    const token = localStorage.getItem('token') //we get the user by the token
+    const token = localStorage.getItem("token");
+    if (!token) return null;
 
-    if(!token) return null;//if there is no token then no
-    return token // and then we import it
-}
+    try {
+        
+        const user = jwtDecode(token);
+        return user;
+    } catch (error) {
+        console.error("Failed to decode token:", error);
+        return null;
+    }
+};
 
-//we need to pass formdata for signup and signin because we need the formdata to post and its being passed at signup.jsx and signin.jsx and as signup(formData)
+export const isAdmin = () => {
+    const user = getUser();
+    return user?.admin === true; 
+};
+
 export const signin = async (formData) => {
     try{
         const res = await fetch(`${BACKEND_URL}/signin`, {
-            method: "POST", //type
-            headers: {"Content-Type": 'application/json'},//tells them what sort of data were gonna be sendign were gonna be sendign a json data
-            body: JSON.stringify(formData)//this ables this postman to send javascript body formdata to db
+            method: "POST", 
+            headers: {"Content-Type": 'application/json'},
+            body: JSON.stringify(formData)
         })
 
         const json = await res.json();
-        if(json.error){//error handling
+        if(json.error){
             throw new Error(json.error)
         }
         localStorage.setItem('token', json.token)
         return json;
     }catch(err){
-        throw new Error(err)//using backend res.status to throw error
+        throw new Error(err)
     }
 }
 
