@@ -2,29 +2,37 @@ import { useState, useEffect } from 'react'
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import Signup from "./components/Signup/signup.jsx"
 import Signin from './components/Signin/signin.jsx'
-import { getUser } from "./services/authService.js"
+import { getUser, isAdmin } from "./services/authService.js"
+import AdminRoute from './components/Protects/AdminRoute.jsx';
 import NavBar from './components/NavBar/navbar.jsx'
 import MenuForm from './components/Menuform/Menuform.jsx';
 import { index, Create , deleteMenu, update } from "./services/menuService.js"
 
 
 const App = () => {
-const [token, setToken] = useState(getUser());
+  const [token, setToken] = useState(getUser());
+  const [adminStatus, setAdminStatus] = useState(false);
   const [menus, setMenus] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchTracks = async () => {
+    const fetchAdminStatus = async () => {
+      const admin = await isAdmin();
+      setAdminStatus(admin);
+    };
+
+    if (token) fetchAdminStatus();
+
+    const fetchMenus = async () => {
       try {
         const menuData = await index();
-        console.log("MenuData: ", menuData);
-        setTracks(menuData);
+        setMenus(menuData);
       } catch (err) {
-        console.log("Error Fetching Menu:", err);
+        console.log('Error Fetching Menu:', err);
       }
     };
-    fetchTracks();
-  }, []);
+    fetchMenus();
+  }, [token]);
 
   const handleAddTrack = async (menuFormData) => {
     try {
@@ -65,7 +73,12 @@ const [token, setToken] = useState(getUser());
       <Routes>
         <Route path="/users/signup" element={<Signup setToken={setToken}/>}/>
         <Route path="/users/signin" element={<Signin setToken={setToken}/>}/>
-        <Route path="/menuform" element={<MenuForm/>}/>
+
+        {/* ADMIN ROUTING */}
+        <Route path="/menuform" element={
+          <AdminRoute isAdmin={adminStatus}>
+        <MenuForm/>
+        </AdminRoute>}/>
       </Routes>
     </>
   )
