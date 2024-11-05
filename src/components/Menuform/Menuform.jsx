@@ -149,6 +149,8 @@ const MenuForm = ({ handleAddMenu }) => {
                     <option value="Main">Main</option>
                     <option value="Appetizer">Appetizer</option>
                     <option value="Dessert">Dessert</option>
+                    <option value="Side">Side</option>
+                    <option value="Drink">Drink</option>
                   </select>
 
                 <label htmlFor="foodImg-input">Food Image</label>
