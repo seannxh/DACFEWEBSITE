@@ -70,90 +70,264 @@ const ViewMenu = ({ handleDeleteMenu, handleUpdateMenu, isAdmin }) => {
 
     return (
         <div>
-            <ul>
-                <h2>View Menu</h2>
-                {menus.map((menu) => (
-                    <li key={menu._id}>
-                        {editingMenuId === menu._id ? (
-                            <>
-                                {/* Display "Edit Menu" heading when editing */}
-                                <h2>Edit Menu</h2>
-                                <form onSubmit={handleEditSubmit}>
-                                    <input
-                                        type="text"
-                                        name="name"
-                                        value={editFormData.name}
-                                        onChange={handleFormChange}
-                                        placeholder="Name"
-                                    /><br/>
-                                    <input
-                                        type="text"
-                                        name="description"
-                                        value={editFormData.description}
-                                        onChange={handleFormChange}
-                                        placeholder="Description"
-                                    /><br/>
-                                    <input
-                                        type="number"
-                                        name="price"
-                                        value={editFormData.price}
-                                        onChange={handleFormChange}
-                                        placeholder="Price"
-                                    /><br/>
-                                    <label htmlFor="foodImg-input">Food Image</label>
-                                    <input
-                                        type="file"
-                                        name="foodImg"
-                                        id="foodImg-input"
-                                        onChange={handleFileChange}
-                                    /><br/>
-                                    {imagePreview && (
-                                        <div>
-                                            <img src={imagePreview} alt="Food Preview" style={{ width: '200px', height: 'auto' }} />
-                                        </div>
-                                    )}
-                                    <button type="submit">Save</button><br/>
-                                    <button type="button" onClick={() => setEditingMenuId(null)}>
-                                        Cancel
-                                    </button>
-                                </form>
-                            </>
-                        ) : (
-                            <>
-                                {/* Display "View Menu" heading when viewing */}
-                                <h2>{menu.name}</h2>
-                                <p>Description: {menu.description}</p>
-                                <p>Price: ${menu.price}</p>
-                                <img src={`${BASE_URL}${menu.foodImg}`} alt={menu.name} style={{ width: '100px', height: '100px' }} />
-                                <br/><br/>
-                                Ingredients:
-                                <ul>
-                                    {Array.isArray(menu.ingredients) ? (
-                                        menu.ingredients.map((ingredient, index) => (
-                                            <li key={index}>{ingredient}</li>
-                                        ))
-                                    ) : (
-                                        <p>No ingredients available</p>
-                                    )}
-                                </ul>
-                                <div>
-                                    {isAdmin && (
-                                        <>
-                                            <button onClick={() => handleEditClick(menu)}>
-                                                Edit
-                                            </button>
-                                            <button onClick={() => handleDeleteMenu(menu._id)}>
-                                                Delete
-                                            </button>
-                                        </>
-                                    )}
-                                </div>
-                            </>
-                        )}
-                    </li>
-                ))}
-            </ul>
+            <h2>View Menu</h2>
+            
+            {/* Main Dishes */}
+            <div>
+                <h3>Main</h3>
+                <ul>
+                    {menus.filter(menu => menu.dishType === 'Main').map(menu => (
+                        <li key={menu._id}>
+                            {editingMenuId === menu._id ? (
+                                <>
+                                    <h2>Edit Menu</h2>
+                                    <form onSubmit={handleEditSubmit}>
+                                        <input
+                                            type="text"
+                                            name="name"
+                                            value={editFormData.name}
+                                            onChange={handleFormChange}
+                                            placeholder="Name"
+                                        /><br />
+                                        <input
+                                            type="text"
+                                            name="description"
+                                            value={editFormData.description}
+                                            onChange={handleFormChange}
+                                            placeholder="Description"
+                                        /><br />
+                                        <input
+                                            type="number"
+                                            name="price"
+                                            value={editFormData.price}
+                                            onChange={handleFormChange}
+                                            placeholder="Price"
+                                        /><br />
+                                        <label htmlFor="foodImg-input">Food Image</label>
+                                        <input
+                                            type="file"
+                                            name="foodImg"
+                                            id="foodImg-input"
+                                            onChange={handleFileChange}
+                                        /><br />
+                                        {imagePreview && (
+                                            <div>
+                                                <img src={imagePreview} alt="Food Preview" style={{ width: '200px', height: 'auto' }} />
+                                            </div>
+                                        )}
+                                        <button type="submit">Save</button><br />
+                                        <button type="button" onClick={() => setEditingMenuId(null)}>
+                                            Cancel
+                                        </button>
+                                    </form>
+                                </>
+                            ) : (
+                                <>
+                                    <h2>{menu.name}</h2>
+                                    <p>Description: {menu.description}</p>
+                                    <p>Price: ${menu.price}</p>
+                                    <img src={`${BASE_URL}${menu.foodImg}`} alt={menu.name} style={{ width: '100px', height: '100px' }} />
+                                    <br /><br />
+                                    Ingredients:
+                                    <ul>
+                                        {Array.isArray(menu.ingredients) ? (
+                                            menu.ingredients.map((ingredient, index) => (
+                                                <li key={index}>{ingredient}</li>
+                                            ))
+                                        ) : (
+                                            <p>No ingredients available</p>
+                                        )}
+                                    </ul>
+                                    <div>
+                                        {isAdmin && (
+                                            <>
+                                                <button onClick={() => handleEditClick(menu)}>
+                                                    Edit
+                                                </button>
+                                                <button onClick={() => handleDeleteMenu(menu._id)}>
+                                                    Delete
+                                                </button>
+                                            </>
+                                        )}
+                                    </div>
+                                </>
+                            )}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
+            {/* Appetizers */}
+            <div>
+                <h3>Appetizer</h3>
+                <ul>
+                    {menus.filter(menu => menu.dishType === 'Appetizer').map(menu => (
+                        <li key={menu._id}>
+                            {editingMenuId === menu._id ? (
+                                <>
+                                    <h2>Edit Menu</h2>
+                                    <form onSubmit={handleEditSubmit}>
+                                        <input
+                                            type="text"
+                                            name="name"
+                                            value={editFormData.name}
+                                            onChange={handleFormChange}
+                                            placeholder="Name"
+                                        /><br />
+                                        <input
+                                            type="text"
+                                            name="description"
+                                            value={editFormData.description}
+                                            onChange={handleFormChange}
+                                            placeholder="Description"
+                                        /><br />
+                                        <input
+                                            type="number"
+                                            name="price"
+                                            value={editFormData.price}
+                                            onChange={handleFormChange}
+                                            placeholder="Price"
+                                        /><br />
+                                        <label htmlFor="foodImg-input">Food Image</label>
+                                        <input
+                                            type="file"
+                                            name="foodImg"
+                                            id="foodImg-input"
+                                            onChange={handleFileChange}
+                                        /><br />
+                                        {imagePreview && (
+                                            <div>
+                                                <img src={imagePreview} alt="Food Preview" style={{ width: '200px', height: 'auto' }} />
+                                            </div>
+                                        )}
+                                        <button type="submit">Save</button><br />
+                                        <button type="button" onClick={() => setEditingMenuId(null)}>
+                                            Cancel
+                                        </button>
+                                    </form>
+                                </>
+                            ) : (
+                                <>
+                                    <h2>{menu.name}</h2>
+                                    <p>Description: {menu.description}</p>
+                                    <p>Price: ${menu.price}</p>
+                                    <img src={`${BASE_URL}${menu.foodImg}`} alt={menu.name} style={{ width: '100px', height: '100px' }} />
+                                    <br /><br />
+                                    Ingredients:
+                                    <ul>
+                                        {Array.isArray(menu.ingredients) ? (
+                                            menu.ingredients.map((ingredient, index) => (
+                                                <li key={index}>{ingredient}</li>
+                                            ))
+                                        ) : (
+                                            <p>No ingredients available</p>
+                                        )}
+                                    </ul>
+                                    <div>
+                                        {isAdmin && (
+                                            <>
+                                                <button onClick={() => handleEditClick(menu)}>
+                                                    Edit
+                                                </button>
+                                                <button onClick={() => handleDeleteMenu(menu._id)}>
+                                                    Delete
+                                                </button>
+                                            </>
+                                        )}
+                                    </div>
+                                </>
+                            )}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
+            {/* Desserts */}
+            <div>
+                <h3>Dessert</h3>
+                <ul>
+                    {menus.filter(menu => menu.dishType === 'Dessert').map(menu => (
+                        <li key={menu._id}>
+                            {editingMenuId === menu._id ? (
+                                <>
+                                    <h2>Edit Menu</h2>
+                                    <form onSubmit={handleEditSubmit}>
+                                        <input
+                                            type="text"
+                                            name="name"
+                                            value={editFormData.name}
+                                            onChange={handleFormChange}
+                                            placeholder="Name"
+                                        /><br />
+                                        <input
+                                            type="text"
+                                            name="description"
+                                            value={editFormData.description}
+                                            onChange={handleFormChange}
+                                            placeholder="Description"
+                                        /><br />
+                                        <input
+                                            type="number"
+                                            name="price"
+                                            value={editFormData.price}
+                                            onChange={handleFormChange}
+                                            placeholder="Price"
+                                        /><br />
+                                        <label htmlFor="foodImg-input">Food Image</label>
+                                        <input
+                                            type="file"
+                                            name="foodImg"
+                                            id="foodImg-input"
+                                            onChange={handleFileChange}
+                                        /><br />
+                                        {imagePreview && (
+                                            <div>
+                                                <img src={imagePreview} alt="Food Preview" style={{ width: '200px', height: 'auto' }} />
+                                            </div>
+                                        )}
+                                        <button type="submit">Save</button><br />
+                                        <button type="button" onClick={() => setEditingMenuId(null)}>
+                                            Cancel
+                                        </button>
+                                    </form>
+                                </>
+                            ) : (
+                                <>
+                                    <h2>{menu.name}</h2>
+                                    <p>Description: {menu.description}</p>
+                                    <p>Price: ${menu.price}</p>
+                                    <img src={`${BASE_URL}${menu.foodImg}`} alt={menu.name} style={{ width: '100px', height: '100px' }} />
+                                    <br /><br />
+                                    Ingredients:
+                                    <ul>
+                                        {Array.isArray(menu.ingredients) ? (
+                                            menu.ingredients.map((ingredient, index) => (
+                                                <li key={index}>{ingredient}</li>
+                                            ))
+                                        ) : (
+                                            <p>No ingredients available</p>
+                                        )}
+                                    </ul>
+                                    <div>
+                                        {isAdmin && (
+                                            <>
+                                                <button onClick={() => handleEditClick(menu)}>
+                                                    Edit
+                                                </button>
+                                                <button onClick={() => handleDeleteMenu(menu._id)}>
+                                                    Delete
+                                                </button>
+                                            </>
+                                        )}
+                                    </div>
+                                </>
+                            )}
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
     );
-}
+};
+
 export default ViewMenu;
