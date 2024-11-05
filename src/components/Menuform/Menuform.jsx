@@ -40,7 +40,6 @@ const MenuForm = ({ handleAddMenu }) => {
         })
         const imageUrl = URL.createObjectURL(getFile);
         setImagePreview(imageUrl)
-        console.log(imageUrl)
       }
   };
 
@@ -89,6 +88,7 @@ const MenuForm = ({ handleAddMenu }) => {
 
     return(
         <main>
+          <h1>New Menu</h1>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="name-input">Name</label>
                 <input 

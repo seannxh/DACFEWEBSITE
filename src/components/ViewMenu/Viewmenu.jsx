@@ -66,58 +66,61 @@ const ViewMenu = ({ handleDeleteMenu, handleUpdateMenu, isAdmin }) => {
         }
     };
     
-    
+
 
     return (
         <div>
-            <h1>Edit Menu</h1>
             <ul>
+                <h2>View Menu</h2>
                 {menus.map((menu) => (
                     <li key={menu._id}>
                         {editingMenuId === menu._id ? (
-                            // Edit form
-                            <form onSubmit={handleEditSubmit}>
-                                <input
-                                    type="text"
-                                    name="name"
-                                    value={editFormData.name}
-                                    onChange={handleFormChange}
-                                    placeholder="Name"
-                                /><br/>
-                                <input
-                                    type="text"
-                                    name="description"
-                                    value={editFormData.description}
-                                    onChange={handleFormChange}
-                                    placeholder="Description"
-                                /><br/>
-                                <input
-                                    type="number"
-                                    name="price"
-                                    value={editFormData.price}
-                                    onChange={handleFormChange}
-                                    placeholder="Price"
-                                /><br/>
-                                <label htmlFor="foodImg-input">Food Image</label>
-                                <input
-                                    type="file"
-                                    name="foodImg"
-                                    id="foodImg-input"
-                                    onChange={handleFileChange}
-                                /><br/>
-                                {imagePreview && (
-                                    <div>
-                                        <img src={imagePreview} alt="Food Preview" style={{ width: '200px', height: 'auto' }} />
-                                    </div>
-                                )}
-                                <button type="submit">Save</button><br/>
-                                <button type="button" onClick={() => setEditingMenuId(null)}>
-                                    Cancel
-                                </button>
-                            </form>
-                        ) : (
-                            // Display menu details
                             <>
+                                {/* Display "Edit Menu" heading when editing */}
+                                <h2>Edit Menu</h2>
+                                <form onSubmit={handleEditSubmit}>
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        value={editFormData.name}
+                                        onChange={handleFormChange}
+                                        placeholder="Name"
+                                    /><br/>
+                                    <input
+                                        type="text"
+                                        name="description"
+                                        value={editFormData.description}
+                                        onChange={handleFormChange}
+                                        placeholder="Description"
+                                    /><br/>
+                                    <input
+                                        type="number"
+                                        name="price"
+                                        value={editFormData.price}
+                                        onChange={handleFormChange}
+                                        placeholder="Price"
+                                    /><br/>
+                                    <label htmlFor="foodImg-input">Food Image</label>
+                                    <input
+                                        type="file"
+                                        name="foodImg"
+                                        id="foodImg-input"
+                                        onChange={handleFileChange}
+                                    /><br/>
+                                    {imagePreview && (
+                                        <div>
+                                            <img src={imagePreview} alt="Food Preview" style={{ width: '200px', height: 'auto' }} />
+                                        </div>
+                                    )}
+                                    <button type="submit">Save</button><br/>
+                                    <button type="button" onClick={() => setEditingMenuId(null)}>
+                                        Cancel
+                                    </button>
+                                </form>
+                            </>
+                        ) : (
+                            <>
+                                {/* Display "View Menu" heading when viewing */}
                                 <h2>{menu.name}</h2>
                                 <p>Description: {menu.description}</p>
                                 <p>Price: ${menu.price}</p>
@@ -152,6 +155,5 @@ const ViewMenu = ({ handleDeleteMenu, handleUpdateMenu, isAdmin }) => {
             </ul>
         </div>
     );
-};
-
+}
 export default ViewMenu;
