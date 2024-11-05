@@ -76,13 +76,16 @@ const App = () => {
   return (
     <>
       <AuthedUserContext.Provider value={token}>
-        <NavBar token={token} setToken={setToken}/>
+        <NavBar token={token} setToken={setToken} isAdmin={adminStatus}/>
         <Routes>
           {token ? (
             <>
               <Route path="/home" element={<Home token={token}/>}/>
               <Route path="/" element={<Navigate to="/home" replace />} />
-              <Route path="/menuform" element={<MenuForm/>}/>
+              <Route path="/menuform" element={
+                <AdminRoute isAdmin={adminStatus}>
+                <MenuForm/>
+                </AdminRoute>}/>
               <Route path="/viewmenu" element={<ViewMenu/>}/>
               <Route path="/contactus" element={<ContactUs/>}/>
             </>

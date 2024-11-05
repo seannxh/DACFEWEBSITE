@@ -18,17 +18,22 @@ const NavBar = (props) => {
                                 Home
                             </Link>
                         </li>
-                    <li>
-                        <Link to="/viewmenu">
-                            View Menu
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/contactus">
-                            Contact Us
-                        </Link>
-                    </li>
+                        <li>
+                            <Link to="/viewmenu">
+                             View Menu
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/contactus">
+                                Contact Us
+                            </Link>
+                        </li>
                     </div>
+                    {props.isAdmin && (
+                            <li>
+                                <Link to="/menuform">Admin Menu Form</Link>
+                            </li>
+                        )}
                         <li>
                             <Link onClick={() => {signout()
                             // when signed out it makes the token null
