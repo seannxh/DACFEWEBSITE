@@ -76,7 +76,7 @@ const App = () => {
   return (
     <>
       <AuthedUserContext.Provider value={token}>
-        <NavBar token={token} setToken={setToken}/>
+        <NavBar token={token} setToken={setToken} isAdmin={adminStatus}/>
         <Routes>
           {token ? (
             <>
@@ -84,7 +84,11 @@ const App = () => {
               <Route path="/" element={<Navigate to="/home" replace />} />
               <Route path="/menuform" element={
                 <AdminRoute isAdmin={adminStatus}>
+<<<<<<< HEAD
                   <MenuForm handleUpdateMenu={handleUpdateMenu} handleAddMenu={handleAddMenu}/>
+=======
+                <MenuForm/>
+>>>>>>> 200ee43628b1c62a351246143d9441aef94a1bdf
                 </AdminRoute>}/>
               <Route path="/viewmenu" element={<ViewMenu/>}/>
               <Route path="/contactus" element={<ContactUs/>}/>
