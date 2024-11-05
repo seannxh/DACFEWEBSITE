@@ -1,20 +1,20 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Show } from "../../services/menuService.js"
+import { index, Show, Create, CreateSuggestions , deleteMenu, update } from "../../services/menuService.js"
 
 
-const MenuForm = ({ handleAddMenu, handleUpdateMenu }) => {
+const MenuForm = ({ handleAddMenu }) => {
   const { menuId } = useParams();
   const [imagePreview, setImagePreview] = useState(null)
+  const [ingredientInput, setIngredientInput] = useState('');
   const [formData, setFormData] = useState({
     name: "",
     price: "",
-    ingredients: "",
+    ingredients: [],
     foodImg: "",
     description: ""
   });
 
-  const handleFileChange = (e) => {
 
   useEffect(() => {
     if (menuId) {
@@ -30,16 +30,18 @@ const MenuForm = ({ handleAddMenu, handleUpdateMenu }) => {
     }
   }, [menuId]);
 
-  const getFile = e.target.files[0];
+  const handleFileChange = (e) => {
+    const getFile = e.target.files[0];
 
-    if(getFile){
-      setFormData({
-        ...formData,
-        foodImg: getFile,
-      })
-      const imageUrl = URL.createObjectURL(getFile);
-      setImagePreview(imageUrl)
-    }
+      if(getFile){
+        setFormData({
+          ...formData,
+          foodImg: getFile,
+        })
+        const imageUrl = URL.createObjectURL(getFile);
+        setImagePreview(imageUrl)
+        console.log(imageUrl)
+      }
   };
 
   const handleChange = (evt) => {
@@ -51,17 +53,43 @@ const MenuForm = ({ handleAddMenu, handleUpdateMenu }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+  
+    const data = new FormData();
+    data.append("name", formData.name);
+    data.append("price", formData.price);
+    data.append("ingredients", formData.ingredients);
+    data.append("description", formData.description);
+    if (formData.foodImg) data.append("foodImg", formData.foodImg); // Only append if there's an image
+  
     if (menuId) {
-      handleUpdateMenu(menuId, formData);
+      handleUpdateMenu(menuId, data);
+      console.log(menuId, data)
     } else {
-      handleAddMenu(formData);
+      handleAddMenu(data);
     }
   };
+
+  const handleIngredientAdd = () => {
+    if (ingredientInput.trim() !== '') {
+      setFormData((prevData) => ({
+        ...prevData,
+        ingredients: [...prevData.ingredients, ingredientInput.trim()]
+      }));
+      setIngredientInput('');
+    }
+  };
+
+  const handleIngredientRemove = (index) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      ingredients: prevData.ingredients.filter((_, i) => i !== index)
+    }));
+  };
+  
 
     return(
         <main>
             <form onSubmit={handleSubmit}>
-            <h1>{menuId ? 'Edit Menu' : 'New Menu'}</h1>
                 <label htmlFor="name-input">Name</label>
                 <input 
                     required
@@ -80,13 +108,30 @@ const MenuForm = ({ handleAddMenu, handleUpdateMenu }) => {
                     value={formData.price} 
                     onChange={handleChange}                    
                 />
-                <label htmlFor="ingredients-input">Ingredients</label>
+                <label htmlFor="ingredients-input">Add Ingredient</label>
+                <input
+                  type="text"
+                  id="ingredients-input"
+                  value={ingredientInput} // Bind the temporary input state
+                  onChange={(e) => setIngredientInput(e.target.value)}
+                />
+                <button type="button" onClick={handleIngredientAdd}>
+                  Add Ingredient
+                </button>
+                <ul>
+                  {formData.ingredients.map((ingredient, index) => (
+                    <li key={index}>
+                      {ingredient} <button type="button" onClick={() => handleIngredientRemove(index)}>Remove</button>
+                    </li>
+                ))}
+                </ul>
+                <label htmlFor="description-input">Descriptions</label>
                 <input 
                     required
                     type="text"
-                    name="ingredients"
-                    id="ingredients-input"
-                    value={formData.ingredients} 
+                    name="description"
+                    id="description-input"
+                    value={formData.description} 
                     onChange={handleChange}                    
                 />
                 <label htmlFor="foodImg-input">Food Image</label>

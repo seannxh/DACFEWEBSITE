@@ -1,5 +1,5 @@
 import { useState, useEffect, createContext } from 'react'
-import { Route, Routes, useNavigate, Navigate } from 'react-router-dom';
+import { Route, Routes, useNavigate, Navigate, useParams } from 'react-router-dom';
 import Signup from "./components/Signup/signup.jsx"
 import Signin from './components/Signin/signin.jsx'
 import { getUser, isAdmin } from "./services/authService.js"
@@ -11,24 +11,18 @@ import MenuForm from './components/Menuform/Menuform.jsx';
 import Home from "./components/Home/Home.jsx"
 import ViewMenu from './components/ViewMenu/Viewmenu.jsx';
 import { index, Create , deleteMenu, update } from "./services/menuService.js"
+const BASE_URL = `${import.meta.env.VITE_EXPRESS_BACKEND_URL}`;
 
 
 const App = () => {
   const [token, setToken] = useState(getUser());
-  const [adminStatus, setAdminStatus] = useState(false);
+  const [adminStatus, setAdminStatus] = useState(isAdmin());
   const [menus, setMenus] = useState([]);
   const navigate = useNavigate();
 
   const AuthedUserContext = createContext(null);
 
   useEffect(() => {
-    const fetchAdminStatus = async () => {
-      const admin = await isAdmin();
-      setAdminStatus(admin);
-    };
-
-    if (token) fetchAdminStatus();
-
     const fetchMenus = async () => {
       try {
         const menuData = await index();
@@ -37,23 +31,37 @@ const App = () => {
         console.log('Error Fetching Menu:', err);
       }
     };
+
+    if (token) setAdminStatus(isAdmin()); // Directly check admin status based on token
     fetchMenus();
   }, [token]);
+  
 
   const handleAddMenu = async (menuFormData) => {
     try {
-      const newItem = await Create(menuFormData);
-      setMenus([newItem, ...menus]);
+      const response = await fetch(`${BASE_URL}/menus`, {
+        method: 'POST',
+        body: menuFormData,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+  
+      if (!response.ok) throw new Error("Error creating menu");
+  
+      const newItem = await response.json();
+      setMenus([newItem, ...menus]); // Update state with the new menu item
       navigate("/viewmenu");
-    } catch (err) {
-      console.error("Error Adding Item:", err);
+    } catch (error) {
+      console.error("Error adding menu item:", error);
     }
   };
+  
 
   const handleDeleteMenu = async (menuId) => {
     try {
       await deleteMenu(menuId);
-      setTracks(menus.filter((menu) => menu._id !== menuId));
+      setMenus(menus.filter((menu) => menu._id !== menuId));
       navigate("/viewmenu");
     } catch (err) {
       console.error("Error Adding Item:", err);
@@ -62,35 +70,40 @@ const App = () => {
 
   const handleUpdateMenu = async (menuId, menuFormData) => {
     try {
-      const updatedMenu = await update(menuId, menuFormData);
-      const updatedMenus = menus.map((menu) =>
-        menu._id === menuId ? updatedMenu : menu
-      );
-      setMenus(updatedMenus)
-      navigate("/viewmenu");
+        const updatedMenu = await update(menuId, menuFormData);
+
+        if (!updatedMenu) {
+            console.error("Update failed: No data returned");
+            return;
+        }
+
+        const updatedMenus = menus.map((menu) =>
+            menu._id === menuId ? updatedMenu : menu
+        );
+
+        setMenus(updatedMenus);
+        navigate("/viewmenu");
     } catch (err) {
-      console.error("Error updating track:", err);
+        console.error("Error updating track:", err);
     }
-  };
+};
+
+ 
 
   return (
     <>
       <AuthedUserContext.Provider value={token}>
-        <NavBar token={token} setToken={setToken} isAdmin={adminStatus}/>
+        <NavBar token={token} setToken={setToken} isAdmin={adminStatus} setAdminStatus={setAdminStatus}/>
         <Routes>
           {token ? (
             <>
               <Route path="/home" element={<Home token={token}/>}/>
               <Route path="/" element={<Navigate to="/home" replace />} />
               <Route path="/menuform" element={
-                <AdminRoute isAdmin={adminStatus}>
-<<<<<<< HEAD
+                <AdminRoute isAdmin={adminStatus}  setAdminStatus={setAdminStatus}>
                   <MenuForm handleUpdateMenu={handleUpdateMenu} handleAddMenu={handleAddMenu}/>
-=======
-                <MenuForm/>
->>>>>>> 200ee43628b1c62a351246143d9441aef94a1bdf
                 </AdminRoute>}/>
-              <Route path="/viewmenu" element={<ViewMenu/>}/>
+              <Route path="/viewmenu" element={<ViewMenu handleDeleteMenu={handleDeleteMenu} handleUpdateMenu={handleUpdateMenu} isAdmin={adminStatus} setAdminStatus={setAdminStatus}/>}/>
               <Route path="/contactus" element={<ContactUs/>}/>
             </>
           ) : (

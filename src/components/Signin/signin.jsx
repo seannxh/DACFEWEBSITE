@@ -41,6 +41,10 @@ const SignIn = (props) => {
         return !formData.username || !formData.password;
     };
 
+    const handleSignUpRedirect = () => {
+        navigate('/users/signup');
+    };
+
     return (
         <main>
             <h1>Sign In</h1>
@@ -68,6 +72,7 @@ const SignIn = (props) => {
                     <button type="submit" disabled={isFormInvalid()}>
                         Sign In
                     </button>
+                    <button onClick={handleSignUpRedirect}>Sign Up</button>
                     <button onClick={() => navigate('/')}>Cancel</button>
                 </div>
             </form>

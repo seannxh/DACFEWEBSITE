@@ -1,4 +1,4 @@
-const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}`;
+const BASE_URL = `${import.meta.env.VITE_EXPRESS_BACKEND_URL}`;
 
 const index = async () => {
     try {
@@ -24,19 +24,9 @@ const Show = async (menuId) => {
 
 const Create = async (menuFormData) => {
     try {
-        const formData =  new FormData();
-
-        // Append all form data
-        formData.append('name', menuFormData.name);
-        formData.append('price', menuFormData.price);
-        formData.append('ingredients', menuFormData.ingredients);
-        formData.append('foodImg', menuFormData.foodImg);  // Ensure this is the file object
-        formData.append('description', menuFormData.description);
-
-        // Remove menuId from URL
         const res = await fetch(`${BASE_URL}/menus`, {  // Post to BASE_URL directly
             method: 'POST',
-            body: formData,
+            body: menuFormData,
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
                 // Do NOT set 'Content-Type' here; fetch will automatically set it for FormData
@@ -76,7 +66,8 @@ const deleteMenu = async (menuId) => {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
-      return res.json();
+      const json = await res.json();
+      return json
     } catch (error) {
       console.log(error);
     }
@@ -92,6 +83,8 @@ const update = async (menuId, menuFormData)=> {
             },
             body: JSON.stringify(menuFormData)
         })
+        const json = await res.json();
+        return json
     }catch(err) {
         console.log(err)
     }
