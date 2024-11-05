@@ -1,6 +1,6 @@
-import { useState } from 'react' //we need to use the state because we will keep the form data tracked via state
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signin } from '../../services/authService.js'
+import { signin, isAdmin } from '../../services/authService.js';
 
 const SignIn = (props) => {
     const navigate = useNavigate();
@@ -8,44 +8,38 @@ const SignIn = (props) => {
         username: '',
         password: ''
     });
-    const [errMessage, setErrMessage] = useState(''); //to record any errors and display that to the screen
-
+    const [errMessage, setErrMessage] = useState('');
 
     const handleChange = (e) => {
         setFormData({
-            ...formData, //the existing formdata's data
+            ...formData,
             [e.target.name]: e.target.value
-        })
-    }
+        });
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-
-            // call our backend to create the user
             const userResponse = await signin(formData);
-            console.log(userResponse)
-
-            // set the users' token
+            console.log("Response from signin:", userResponse);
             props.setToken(userResponse.token);
 
-            // navigate the user to the logged page
-            navigate('/')
+            checkAdminStatus();
 
-            console.log(formData)
+            navigate('/');
         } catch (err) {
-            setErrMessage(err.message)
+            setErrMessage(err.message);
         }
-    }
+    };
 
+    const checkAdminStatus = async () => {
+        const adminStatus = await isAdmin();
+        console.log("User admin status:", adminStatus);
+    };
 
     const isFormInvalid = () => {
-        if (!formData.username || !formData.password ) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+        return !formData.username || !formData.password;
+    };
 
     return (
         <main>
@@ -70,16 +64,15 @@ const SignIn = (props) => {
                         onChange={handleChange}
                     />
                 </div>
-               
                 <div>
-                    <button type='submit' disabled={isFormInvalid}>Sign In</button>
+                    <button type="submit" disabled={isFormInvalid()}>
+                        Sign In
+                    </button>
                     <button onClick={() => navigate('/')}>Cancel</button>
                 </div>
             </form>
         </main>
-    )
-}
-
-
+    );
+};
 
 export default SignIn;
