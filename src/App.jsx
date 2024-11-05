@@ -4,6 +4,7 @@ import Signup from "./components/Signup/signup.jsx"
 import Signin from './components/Signin/signin.jsx'
 import { getUser, isAdmin } from "./services/authService.js"
 import AdminRoute from './components/Protects/AdminRoute.jsx';
+import ProtectedRoute from './components/Protects/ProtectedRoutes.jsx';
 import NavBar from './components/NavBar/navbar.jsx'
 import ContactUs from './components/ContactUs/Contactus.jsx';
 import MenuForm from './components/Menuform/Menuform.jsx';
