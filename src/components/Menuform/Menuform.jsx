@@ -3,14 +3,18 @@ import { useParams } from "react-router-dom";
 import { Show } from "../../services/menuService.js"
 
 
-const MenuForm = (props) => {
+const MenuForm = ({ handleAddMenu, handleUpdateMenu }) => {
   const { menuId } = useParams();
+  const [imagePreview, setImagePreview] = useState(null)
   const [formData, setFormData] = useState({
-    type: "",
     name: "",
-    description: "",
     price: "",
+    ingredients: "",
+    foodImg: "",
+    description: ""
   });
+
+  const handleFileChange = (e) => {
 
   useEffect(() => {
     if (menuId) {
@@ -26,6 +30,18 @@ const MenuForm = (props) => {
     }
   }, [menuId]);
 
+  const getFile = e.target.files[0];
+
+    if(getFile){
+      setFormData({
+        ...formData,
+        foodImg: getFile,
+      })
+      const imageUrl = URL.createObjectURL(getFile);
+      setImagePreview(imageUrl)
+    }
+  };
+
   const handleChange = (evt) => {
     setFormData({
       ...formData,
@@ -36,9 +52,9 @@ const MenuForm = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (menuId) {
-      props.handleUpdateTrack(menuId, formData);
+      handleUpdateMenu(menuId, formData);
     } else {
-      props.handleAddTrack(formData);
+      handleAddMenu(formData);
     }
   };
 
@@ -46,42 +62,48 @@ const MenuForm = (props) => {
         <main>
             <form onSubmit={handleSubmit}>
             <h1>{menuId ? 'Edit Menu' : 'New Menu'}</h1>
-                <label htmlFor="type-input">Type</label>
-                <input 
-                    required
-                    type="text"
-                    name="type"
-                    id="type-input"
-                    value={formData.type}
-                    onChange={handleChange}                    
-                />
-                <label htmlFor="name-input">Artist</label>
+                <label htmlFor="name-input">Name</label>
                 <input 
                     required
                     type="text"
                     name="name"
                     id="name-input"
-                    value={formData.name} 
-                    onChange={handleChange}                    
-                />
-                <label htmlFor="description-input">Description</label>
-                <input 
-                    required
-                    type="text"
-                    name="description"
-                    id="description-input"
-                    value={formData.description} 
+                    value={formData.name}
                     onChange={handleChange}                    
                 />
                 <label htmlFor="price-input">Price</label>
                 <input 
                     required
-                    type="Number"
+                    type="number"
                     name="price"
                     id="price-input"
                     value={formData.price} 
                     onChange={handleChange}                    
                 />
+                <label htmlFor="ingredients-input">Ingredients</label>
+                <input 
+                    required
+                    type="text"
+                    name="ingredients"
+                    id="ingredients-input"
+                    value={formData.ingredients} 
+                    onChange={handleChange}                    
+                />
+                <label htmlFor="foodImg-input">Food Image</label>
+                <input
+                    required
+                    type="file"
+                    name="foodImg"
+                    id="foodImg-input"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                />
+
+                {imagePreview && (
+                  <div>
+                    <img src={imagePreview} alt="Food Preview" style={{ width: '200px', height: 'auto' }} />
+                  </div>
+                )}
                 <button type="submit">Submit</button>
             </form>
         </main>

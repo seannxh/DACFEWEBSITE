@@ -1,8 +1,8 @@
-const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/items`;
+const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}`;
 
 const index = async () => {
     try {
-        const res = await fetch(BASE_URL, {
+        const res = await fetch(`${BASE_URL}/menus`, {
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         })
         return res.json();
@@ -13,7 +13,7 @@ const index = async () => {
 
 const Show = async (menuId) => {
     try{
-        const res = await fetch(`${BASE_URL}/${menuId}`, {
+        const res = await fetch(`${BASE_URL}/menus/${menuId}`, {
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         })
         return res.json();
@@ -22,25 +22,38 @@ const Show = async (menuId) => {
     }
 }
 
- const Create = async (menuFormData) => {
+const Create = async (menuFormData) => {
     try {
-        const res = await fetch(BASE_URL, {
+        const formData =  new FormData();
+
+        // Append all form data
+        formData.append('name', menuFormData.name);
+        formData.append('price', menuFormData.price);
+        formData.append('ingredients', menuFormData.ingredients);
+        formData.append('foodImg', menuFormData.foodImg);  // Ensure this is the file object
+        formData.append('description', menuFormData.description);
+
+        // Remove menuId from URL
+        const res = await fetch(`${BASE_URL}/menus`, {  // Post to BASE_URL directly
             method: 'POST',
-            body: JSON.stringify(menuFormData),
+            body: formData,
             headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`,
-                'Content-Type': 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+                // Do NOT set 'Content-Type' here; fetch will automatically set it for FormData
             },
         });
 
-        return res.json();
+        if (!res.ok) throw new Error("Failed to create menu");
+
+        return await res.json();
     } catch (error) {
-        console.log(error)
+        console.log("Error in Create:", error);
     }
-}
-const CreateMenu = async (menuId, menuFormData) => {
+};
+
+const CreateSuggestions = async (menuId, menuFormData) => {
     try {
-        const res = await fetch(`${BASE_URL}/${menuId}/comments`, {
+        const res = await fetch(`${BASE_URL}/menus/${menuId}/suggestions`, {
             method: 'POST',
             body: JSON.stringify(menuFormData),
             headers: {
@@ -57,7 +70,7 @@ const CreateMenu = async (menuId, menuFormData) => {
 
 const deleteMenu = async (menuId) => {
     try {
-      const res = await fetch(`${BASE_URL}/${menuId}`, {
+      const res = await fetch(`${BASE_URL}/menus/${menuId}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -71,7 +84,7 @@ const deleteMenu = async (menuId) => {
 
 const update = async (menuId, menuFormData)=> {
     try{
-        const res = await fetch(`${BASE_URL}/${menuId}`, {
+        const res = await fetch(`${BASE_URL}/menus/${menuId}`, {
             method: 'PUT',
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -83,5 +96,5 @@ const update = async (menuId, menuFormData)=> {
         console.log(err)
     }
 }
-export { index, Show, Create, CreateMenu , deleteMenu, update }
+export { index, Show, Create, CreateSuggestions , deleteMenu, update }
 

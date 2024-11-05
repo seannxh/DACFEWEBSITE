@@ -40,11 +40,11 @@ const App = () => {
     fetchMenus();
   }, [token]);
 
-  const handleAddTrack = async (menuFormData) => {
+  const handleAddMenu = async (menuFormData) => {
     try {
       const newItem = await Create(menuFormData);
       setMenus([newItem, ...menus]);
-      navigate("/menu");
+      navigate("/viewmenu");
     } catch (err) {
       console.error("Error Adding Item:", err);
     }
@@ -54,7 +54,7 @@ const App = () => {
     try {
       await deleteMenu(menuId);
       setTracks(menus.filter((menu) => menu._id !== menuId));
-      navigate("/menu");
+      navigate("/viewmenu");
     } catch (err) {
       console.error("Error Adding Item:", err);
     }
@@ -67,7 +67,7 @@ const App = () => {
         menu._id === menuId ? updatedMenu : menu
       );
       setMenus(updatedMenus)
-      navigate("/tracks");
+      navigate("/viewmenu");
     } catch (err) {
       console.error("Error updating track:", err);
     }
@@ -82,7 +82,10 @@ const App = () => {
             <>
               <Route path="/home" element={<Home token={token}/>}/>
               <Route path="/" element={<Navigate to="/home" replace />} />
-              <Route path="/menuform" element={<MenuForm/>}/>
+              <Route path="/menuform" element={
+                <AdminRoute isAdmin={adminStatus}>
+                  <MenuForm handleUpdateMenu={handleUpdateMenu} handleAddMenu={handleAddMenu}/>
+                </AdminRoute>}/>
               <Route path="/viewmenu" element={<ViewMenu/>}/>
               <Route path="/contactus" element={<ContactUs/>}/>
             </>
