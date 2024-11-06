@@ -9,28 +9,25 @@ const Home = (props) => {
 
     const handleMenuClick = () => {
         if(props.token){
-        navigate('/viewmenu'); // Redirects to the "/menu" route
+        navigate('/viewmenu');
       }else{
         navigate('/users/signup')
       }
     };
     return (
       <div>
-        {/* Header Section */}
         <header>
           <h1>Don's Asian Cuisine</h1>
           <p>Authentic flavors, unforgettable experiences.</p>
         </header>
-  
-        {/* Contact Section */}
+
         <section>
           <h2>Contact Us</h2>
           <p>📌 Address: 2512 Rice Blvd, Houston, TX 77005</p>
           <p>📞 Phone: (713) 533-1188</p>
           <p>📧 Email: customer@donsasiancuisine.com</p>
         </section>
-  
-        {/* About Section */}
+
         <section>
           <h2>About Us</h2>
           <p>
@@ -40,14 +37,12 @@ const Home = (props) => {
           </p>
         </section>
   
-        {/* Menu Section */}
         <section>
           <h2>Our Menu</h2>
           <p>Explore our selection of sushi, dim sum, stir-fries, and more. Check our full menu for details.</p>
           <button onClick={handleMenuClick}>View Menu</button>
         </section>
   
-        {/* Social Media Links */}
         <section>
           <h2>Follow Us</h2>
           <p>Stay connected on social media:</p>
@@ -63,7 +58,7 @@ const Home = (props) => {
             </a>
           </div>
         </section>
-        {/* Footer Section */}
+   
         <footer>
           <p>&copy; 2024 Don's Asian Cuisine. All Rights Reserved.</p>
         </footer>

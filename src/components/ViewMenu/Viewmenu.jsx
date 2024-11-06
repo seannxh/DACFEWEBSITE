@@ -44,29 +44,59 @@ const ViewMenu = ({ handleDeleteMenu, handleUpdateMenu, isAdmin }) => {
         }));
     };
 
-    const handleEditSubmit = async (e) => {
-        e.preventDefault();
-        await handleUpdateMenu(editingMenuId, editFormData);
-        setEditingMenuId(null); // Close the edit form after submission
-    };
-
     const handleFileChange = (e) => {
-        const selectedPic = e.target.files[0];
-        if (selectedPic) {
-            if (imagePreview) {
-                URL.revokeObjectURL(imagePreview); // Revoke old preview URL
-            }
-            setFile(selectedPic);
-            const previewURL = URL.createObjectURL(selectedPic);
-            setImagePreview(previewURL); // Set new preview
+        const getFile = e.target.files[0];
+    
+        if (getFile) {
+            setEditFormData((prevData) => ({
+                ...prevData,
+                foodImg: getFile,
+            }));
+    
+            const imageUrl = URL.createObjectURL(getFile);
+            setImagePreview(imageUrl);
         }
     };
 
+    const handleEditSubmit = async (e) => {
+        e.preventDefault();
+    
+        const data = new FormData();
+        data.append("name", editFormData.name);
+        data.append("description", editFormData.description);
+        data.append("price", editFormData.price);
+        data.append("dishType", editFormData.dishType);
+    
+        if (editFormData.foodImg) {
+            data.append("foodImg", editFormData.foodImg);
+        }
+    
+        try {
+            const response = await fetch(`${BASE_URL}/menus/${editingMenuId}`, {
+                method: 'PUT',
+                body: data,
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+            if (!response.ok) {
+                throw new Error('Error updating menu');
+            }
+            const updatedMenu = await response.json();
+            setMenus((prevMenus) => 
+                prevMenus.map((menu) =>
+                    menu._id === updatedMenu._id ? updatedMenu : menu
+                )
+            );
+            setEditingMenuId(null);
+        } catch (error) {
+            console.error('Error submitting menu:', error);
+        }
+    };
     return (
         <div>
             <h2>View Menu</h2>
 
-            {/* Main Category */}
             <h3>Main</h3>
             <ul>
                 {menus.filter(menu => menu.dishType === "Main").map(menu => (
@@ -150,7 +180,6 @@ const ViewMenu = ({ handleDeleteMenu, handleUpdateMenu, isAdmin }) => {
                 ))}
             </ul>
 
-            {/* Appetizer Category */}
             <h3>Appetizer</h3>
             <ul>
                 {menus.filter(menu => menu.dishType === "Appetizer").map(menu => (
@@ -234,7 +263,6 @@ const ViewMenu = ({ handleDeleteMenu, handleUpdateMenu, isAdmin }) => {
                 ))}
             </ul>
 
-            {/* Dessert Category */}
             <h3>Dessert</h3>
             <ul>
                 {menus.filter(menu => menu.dishType === "Dessert").map(menu => (
@@ -318,7 +346,6 @@ const ViewMenu = ({ handleDeleteMenu, handleUpdateMenu, isAdmin }) => {
                 ))}
             </ul>
 
-            {/* Side Category */}
             <h3>Side</h3>
             <ul>
                 {menus.filter(menu => menu.dishType === "Side").map(menu => (
@@ -402,7 +429,6 @@ const ViewMenu = ({ handleDeleteMenu, handleUpdateMenu, isAdmin }) => {
                 ))}
             </ul>
 
-            {/* Drink Category */}
             <h3>Drink</h3>
             <ul>
                 {menus.filter(menu => menu.dishType === "Drink").map(menu => (

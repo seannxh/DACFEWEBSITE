@@ -115,7 +115,7 @@ const MenuForm = ({ handleAddMenu }) => {
                 <input
                   type="text"
                   id="ingredients-input"
-                  value={ingredientInput} // Bind the temporary input state
+                  value={ingredientInput}
                   onChange={(e) => setIngredientInput(e.target.value)}
                 />
                 <button type="button" onClick={handleIngredientAdd}>
