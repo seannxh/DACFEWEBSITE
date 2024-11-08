@@ -47,32 +47,36 @@ const SignIn = (props) => {
 
     return (
         <main>
-            <h1>Sign In</h1>
+            <h1 className="flex justify-center my-4 font-bold text-3xl sm:text-4xl">Sign In</h1>
             <p>{errMessage}</p>
-            <form onSubmit={handleSubmit}>
-                <div>
+            <form onSubmit={handleSubmit} className="flex-col flex justify-center flex-wrap content-center">
+                <div className='font-bold text-lg'>
                     Username:
                     <input
+                        className='ml-2'
                         type="text"
                         name="username"
                         value={formData.username}
                         onChange={handleChange}
                     />
                 </div>
-                <div>
+                <br />
+                <div className='font-bold text-lg'>
                     Password:
                     <input
+                        className='ml-2'
                         type="password"
                         name="password"
                         value={formData.password}
                         onChange={handleChange}
                     />
                 </div>
-                <div>
-                    <button type="submit" disabled={isFormInvalid()} className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive">
+                <br />
+                <div className='self-center mb-2'>
+                    <button type="submit" disabled={isFormInvalid()} className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive mr-1">
                         Sign In
                     </button>
-                    <button onClick={handleSignUpRedirect} className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive">Sign Up</button>
+                    <button onClick={handleSignUpRedirect} className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive mr-1">Sign Up</button>
                     <button onClick={() => navigate('/') } className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive">Cancel</button>
                 </div>
             </form>

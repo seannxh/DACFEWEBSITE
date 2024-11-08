@@ -42,39 +42,45 @@ const SignUp = (props) => {
     return (
         <>
             <main>
-                <h1>Sign Up</h1>
+                <h1 className="flex justify-center my-4 font-bold text-3xl sm:text-4xl">Sign Up</h1>
                 <p>{errMessage}</p> 
                 
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        Username: 
+                <form onSubmit={handleSubmit} className="flex-col flex justify-center flex-wrap content-center">
+                    <div className='font-bold text-lg'>
+                        Username:
                         <input 
+                            className='ml-2'
                             type="text"
                             name="username"
                             value={formData.username}
                             onChange={handleChange}
                         />
                     </div>
-                    <div>
+                    <br></br>
+                    <div className='font-bold text-lg'>
                         Password: 
                         <input 
+                            className='ml-2'
                             type="password"
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
                          />
                     </div>
-                    <div>
-                        Password Confirmation: 
+                    <br></br>
+                    <div className='font-bold text-lg'>
+                        Confim Password: 
                             <input 
+                                className='ml-2'
                                 type="password"
                                 name="passwordConfirm"
                                 value={formData.passwordConfirm}
                                 onChange={handleChange}
                             />
                     </div>
-                    <div>
-                        <button type="submit" disabled={isFormInvalid}className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive">SignUp</button>
+                    <br></br>
+                    <div className='self-center mb-2'>
+                        <button type="submit" disabled={isFormInvalid}className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive mr-2">SignUp</button>
                         <button onClick={() => navigate('/')}className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive">Cancel</button>
                     </div>
                 </form>

@@ -94,7 +94,7 @@ const MenuForm = ({ handleAddMenu }) => {
           <h1 className="flex justify-center my-4 font-bold text-3xl sm:text-4xl">New Menu Item</h1>
             <form onSubmit={handleSubmit} className="flex-col flex justify-center flex-wrap content-center">
 
-                <label htmlFor="name-input" className="justify-self-center">Name</label>
+                <label htmlFor="name-input" className="justify-self-center ">Name</label>
                 <input 
                     required
                     type="text"
@@ -191,7 +191,10 @@ const MenuForm = ({ handleAddMenu }) => {
                     />
                 )}
                 <br></br>
-                <button type="submit" className=" self-center pw-4 py-2 w-24 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive">Submit</button>
+                <div className="self-center mb-2">
+                  <button type="submit" className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive mr-2">Submit</button>
+                  <button onClick={() => navigate('/') } className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive mr-2">Cancel</button>
+                </div>
             </form>
         </main>
     )
