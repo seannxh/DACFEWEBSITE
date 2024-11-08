@@ -12,9 +12,9 @@ const MenuForm = ({ handleAddMenu }) => {
     price: "",
     ingredients: [],
     foodImg: "",
-    description: ""
+    description: "",
+    dishType:""
   });
-
 
   useEffect(() => {
     if (menuId) {
@@ -58,6 +58,7 @@ const MenuForm = ({ handleAddMenu }) => {
     data.append("price", formData.price);
     data.append("ingredients", formData.ingredients);
     data.append("description", formData.description);
+    data.append("dishType", formData.dishType);
     if (formData.foodImg) data.append("foodImg", formData.foodImg); // Only append if there's an image
   
     if (menuId) {
@@ -66,6 +67,8 @@ const MenuForm = ({ handleAddMenu }) => {
     } else {
       handleAddMenu(data);
     }
+
+    console.log('form', formData)
   };
 
   const handleIngredientAdd = () => {
@@ -112,7 +115,7 @@ const MenuForm = ({ handleAddMenu }) => {
                 <input
                   type="text"
                   id="ingredients-input"
-                  value={ingredientInput} // Bind the temporary input state
+                  value={ingredientInput}
                   onChange={(e) => setIngredientInput(e.target.value)}
                 />
                 <button type="button" onClick={handleIngredientAdd}>
@@ -134,6 +137,22 @@ const MenuForm = ({ handleAddMenu }) => {
                     value={formData.description} 
                     onChange={handleChange}                    
                 />
+                <label htmlFor="dishType-select">Dish Type</label>
+                  <select
+                    required
+                    name="dishType"
+                    id="dishType-select"
+                    value={formData.dishType}
+                    onChange={handleChange}
+                  >
+                    <option value="">Select Dish Type</option>
+                    <option value="Main">Main</option>
+                    <option value="Appetizer">Appetizer</option>
+                    <option value="Dessert">Dessert</option>
+                    <option value="Side">Side</option>
+                    <option value="Drink">Drink</option>
+                  </select>
+
                 <label htmlFor="foodImg-input">Food Image</label>
                 <input
                     required

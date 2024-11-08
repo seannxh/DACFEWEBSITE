@@ -32,7 +32,7 @@ const App = () => {
       }
     };
 
-    if (token) setAdminStatus(isAdmin()); // Directly check admin status based on token
+    if (token) setAdminStatus(isAdmin());
     fetchMenus();
   }, [token]);
   
@@ -50,7 +50,7 @@ const App = () => {
       if (!response.ok) throw new Error("Error creating menu");
   
       const newItem = await response.json();
-      setMenus([newItem, ...menus]); // Update state with the new menu item
+      setMenus([newItem, ...menus]);
       navigate("/viewmenu");
     } catch (error) {
       console.error("Error adding menu item:", error);
