@@ -138,7 +138,7 @@ const MenuForm = ({ handleAddMenu }) => {
                     onChange={handleChange}                    
                 />
                 <label htmlFor="dishType-select">Dish Type</label>
-                  <select
+                <select
                     required
                     name="dishType"
                     id="dishType-select"
@@ -146,14 +146,29 @@ const MenuForm = ({ handleAddMenu }) => {
                     onChange={handleChange}
                   >
                     <option value="">Select Dish Type</option>
+                    <option value="APPETIZER">APPETIZER</option>
+                    <option value="BANH MI">BANH MI</option>
+                    <option value="SOUPS & SALADS">SOUPS & SALADS</option>
                     <option value="Main">Main</option>
-                    <option value="Appetizer">Appetizer</option>
-                    <option value="Dessert">Dessert</option>
-                    <option value="Side">Side</option>
-                    <option value="Drink">Drink</option>
+                    <option value="ENTREES">ENTREES</option>
+                    <option value="PHO NOODLE SOUPS">PHO NOODLE SOUPS</option>
+                    <option value="VIETNAMESE RICE PLATTERS">VIETNAMESE RICE PLATTERS</option>
+                    <option value="NOODLES">NOODLES</option>
+                    <option value="V-BOWLS VERMICELLI">V-BOWLS VERMICELLI</option>
+                    <option value="FRIED RICE">FRIED RICE</option>
+                    <option value="SIDE">SIDE</option>
+                    <option value="MAIN">MAIN</option>
+                    <option value="DRINK">DRINK</option>
+                    <option value="RED WINE">RED WINE</option>
+                    <option value="WHITE WINE">WHITE WINE</option>
+                    <option value="SPARKLING WINE">SPARKLING WINE</option>
+                    <option value="DOMESTIC BEER">DOMESTIC BEER</option>
+                    <option value="HOUSE WINE">HOUSE WINE</option>
+                    <option value="IMPORTED BEER">IMPORTED BEER</option>
+                    <option value="SAKE">SAKE</option>
+                    <option value="COCKTAIL">COCKTAIL</option>
+                    <option value="CATERING">CATERING SOUP % ENTREE</option>
                   </select>
-
-                <label htmlFor="foodImg-input">Food Image</label>
                 <input
                     required
                     type="file"
