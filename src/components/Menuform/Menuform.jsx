@@ -91,9 +91,10 @@ const MenuForm = ({ handleAddMenu }) => {
 
     return(
         <main>
-          <h1>New Menu</h1>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="name-input">Name</label>
+          <h1 className="flex justify-center my-4 font-bold text-3xl sm:text-4xl">New Menu Item</h1>
+            <form onSubmit={handleSubmit} className="flex-col flex justify-center flex-wrap content-center">
+
+                <label htmlFor="name-input" className="justify-self-center">Name</label>
                 <input 
                     required
                     type="text"
@@ -102,6 +103,7 @@ const MenuForm = ({ handleAddMenu }) => {
                     value={formData.name}
                     onChange={handleChange}                    
                 />
+                <br></br>
                 <label htmlFor="price-input">Price</label>
                 <input 
                     required
@@ -111,6 +113,7 @@ const MenuForm = ({ handleAddMenu }) => {
                     value={formData.price} 
                     onChange={handleChange}                    
                 />
+                <br></br>
                 <label htmlFor="ingredients-input">Add Ingredient</label>
                 <input
                   type="text"
@@ -118,13 +121,14 @@ const MenuForm = ({ handleAddMenu }) => {
                   value={ingredientInput}
                   onChange={(e) => setIngredientInput(e.target.value)}
                 />
-                <button type="button" onClick={handleIngredientAdd}>
+                <button type="button" onClick={handleIngredientAdd} className=" mt-1 self-center pw-4 py-2 w-24 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive">
                   Add Ingredient
                 </button>
-                <ul>
+                <br />
+                <ul className="list-disc pl-5 space-y-2">
                   {formData.ingredients.map((ingredient, index) => (
                     <li key={index}>
-                      {ingredient} <button type="button" onClick={() => handleIngredientRemove(index)}>Remove</button>
+                      {ingredient} <button type="button" onClick={() => handleIngredientRemove(index)} className="self-center pw-4 py-1 w-20 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive">Remove</button>
                     </li>
                 ))}
                 </ul>
@@ -137,6 +141,7 @@ const MenuForm = ({ handleAddMenu }) => {
                     value={formData.description} 
                     onChange={handleChange}                    
                 />
+                <br></br>
                 <label htmlFor="dishType-select">Dish Type</label>
                 <select
                     required
@@ -169,6 +174,7 @@ const MenuForm = ({ handleAddMenu }) => {
                     <option value="COCKTAIL">COCKTAIL</option>
                     <option value="CATERING">CATERING SOUP % ENTREE</option>
                   </select>
+                <br></br>
                 <input
                     type="file"
                     name="foodImg"
@@ -184,7 +190,8 @@ const MenuForm = ({ handleAddMenu }) => {
                         style={{ width: '200px', height: 'auto' }} 
                     />
                 )}
-                <button type="submit">Submit</button>
+                <br></br>
+                <button type="submit" className=" self-center pw-4 py-2 w-24 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive">Submit</button>
             </form>
         </main>
     )
