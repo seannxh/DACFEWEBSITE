@@ -11,15 +11,15 @@ export default {
         cursive: ['"Dancing Script"', 'cursive'],
         tomorrow: ['"Tomorrow"', 'sans-serif'],
         nova: ['"Nova Square"', 'sans-serif'],
-        league: ['"League Gothic"', 'sans-serif'], // Example of adding a custom font
+        league: ['"League Gothic"', 'sans-serif'], 
       },
       colors: {
-        primary: '#ff5722', // Custom primary color
-        secondary: '#009688', // Custom secondary color
+        primary: '#ff5722', 
+        secondary: '#009688', 
         greybg: '#1a1919'
       },
       spacing: {
-        '128': '32rem', // Custom spacing (e.g., 128 for 32rem)
+        '128': '32rem',
       },
       screens: {
         'custom': '767px',

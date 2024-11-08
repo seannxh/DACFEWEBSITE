@@ -47,7 +47,6 @@ const Home = (props) => {
 
   return (
     <div className="bg-white text-black">
-      {/* Hero Section */}
       <div
         className="relative h-screen bg-cover bg-center bg-no-repeat"
         style={{
@@ -76,10 +75,8 @@ const Home = (props) => {
         </div>
       </div>
 
-      {/* About Us Section */}
       <div className="bg-white">
         <div className="sm:flex items-center max-w-screen-xl mx-auto">
-          {/* Image Section */}
           <div className="sm:w-1/2 p-10">
             <div className="image object-center text-center ">
               <img
@@ -90,7 +87,6 @@ const Home = (props) => {
             </div>
           </div>
 
-          {/* Text Section */}
           <div className="sm:w-1/2 p-5">
             <div className="text">
               <span className="text-gray-500 border-b-2 border-red-500 uppercase">
@@ -112,9 +108,7 @@ const Home = (props) => {
           </div>
         </div>
 
-        {/* Popular Dishes Section */}
         <div className="font-nova flex items-center max-w-screen-xl mx-auto px-5 sm:px-10 pb-10">
-          {/* Popular Dishes Title */}
           <div className="w-full sm:w-1/2 text-left p-5">
             <div className="text">
               <span className="font-nova black border-b-2 border-red-500 uppercase">
@@ -130,7 +124,6 @@ const Home = (props) => {
             </div>
           </div>
 
-          {/* Image Carousel */}
           <div className="w-full sm:w-1/2 max-w-[600px] h-[400px] m-auto relative group">
             <div className="w-full h-full rounded-3xl overflow-hidden">
               <div
@@ -143,12 +136,10 @@ const Home = (props) => {
               ></div>
             </div>
 
-            {/* Left Arrow */}
             <div className="absolute top-[50%] left-5 transform -translate-y-1/2 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer">
               <BsChevronCompactLeft onClick={prevSlide} size={30} />
             </div>
 
-            {/* Right Arrow */}
             <div className="absolute top-[50%] right-5 transform -translate-y-1/2 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer">
               <BsChevronCompactRight onClick={nextSlide} size={30} />
             </div>

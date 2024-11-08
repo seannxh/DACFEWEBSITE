@@ -1,6 +1,6 @@
 import { Link, Navigate } from 'react-router-dom';
 import { signout } from "../../services/authService";
-import logo from '../../assets/brandlogo.jpg'; // Path to your uploaded logo
+import logo from '../../assets/brandlogo.jpg';
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
@@ -10,14 +10,13 @@ const NavBar = (props) => {
       {({ open }) => (
         <>
           <div className="flex items-center justify-between w-full pt-10 pb-10 px-0">
-            {/* Logo aligned to the far left */}
+
             <div className="absolute left-0 flex items-center pl-4">
               <Link to="/home">
                 <img src={logo} alt="Don's Asian Cuisine Logo" className="h-15 w-auto" />
               </Link>
             </div>
 
-            {/* Desktop Navigation Links aligned to the far right */}
             <div className="hidden custom-md:flex items-center space-x-10 text-2xl ml-auto pr-4">
               {props.token ? (
                 <>
@@ -48,7 +47,6 @@ const NavBar = (props) => {
               )}
             </div>
 
-            {/* Mobile menu button aligned to the right */}
             <div className="custom-md:hidden flex items-center ml-auto pr-4">
               <Disclosure.Button className="text-gray-400 hover:text-white focus:outline-none">
                 {open ? <XMarkIcon className="h-6 w-6" /> : <Bars3Icon className="h-6 w-6" />}
@@ -56,7 +54,6 @@ const NavBar = (props) => {
             </div>
           </div>
 
-          {/* Mobile Dropdown Menu */}
           <Disclosure.Panel className="custom-md:hidden">
             <div className="px-4 pb-3 space-y-2 text-white text-center">
               {props.token ? (

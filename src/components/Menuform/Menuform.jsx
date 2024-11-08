@@ -59,7 +59,7 @@ const MenuForm = ({ handleAddMenu }) => {
     data.append("ingredients", formData.ingredients);
     data.append("description", formData.description);
     data.append("dishType", formData.dishType);
-    if (formData.foodImg) data.append("foodImg", formData.foodImg); // Only append if there's an image
+    if (formData.foodImg) data.append("foodImg", formData.foodImg);
   
     if (menuId) {
       handleUpdateMenu(menuId, data);
@@ -180,7 +180,7 @@ const MenuForm = ({ handleAddMenu }) => {
                 {imagePreview && (
                     <img 
                         src={imagePreview} 
-                        alt="" // Leave alt empty so no text appears
+                        alt=""
                         style={{ width: '200px', height: 'auto' }} 
                     />
                 )}
