@@ -83,7 +83,7 @@ const Home = (props) => {
           <div className="sm:w-1/2 p-10">
             <div className="image object-center text-center ">
               <img
-                src="https://lh3.googleusercontent.com/p/AF1QipNJal3ppZxFT-HdD0wvvYZ2dV-hUOu5fjvC_fEo=s680-w680-h510"
+                src="/Dons.jpg"
                 alt="About Us"
                 className="rounded-3xl"
               />
