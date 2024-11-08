@@ -74,8 +74,8 @@ const SignUp = (props) => {
                             />
                     </div>
                     <div>
-                        <button type="submit" disabled={isFormInvalid}>SignUp</button>
-                        <button onClick={() => navigate('/')}>Cancel</button>
+                        <button type="submit" disabled={isFormInvalid}className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive">SignUp</button>
+                        <button onClick={() => navigate('/')}className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive">Cancel</button>
                     </div>
                 </form>
                

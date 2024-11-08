@@ -65,7 +65,7 @@ const ViewMenu = ({ handleDeleteMenu, isAdmin }) => {
         setSelectedDishType(value);
 
         if (value === "") {
-            setFilteredMenu(menus); // Show all items if no filter is selected
+            setFilteredMenu(menus);
         } else {
             const filteredItems = menus.filter(menu => menu.dishType === value);
             setFilteredMenu(filteredItems);

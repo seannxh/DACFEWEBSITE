@@ -69,11 +69,11 @@ const SignIn = (props) => {
                     />
                 </div>
                 <div>
-                    <button type="submit" disabled={isFormInvalid()}>
+                    <button type="submit" disabled={isFormInvalid()} className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive">
                         Sign In
                     </button>
-                    <button onClick={handleSignUpRedirect}>Sign Up</button>
-                    <button onClick={() => navigate('/')}>Cancel</button>
+                    <button onClick={handleSignUpRedirect} className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive">Sign Up</button>
+                    <button onClick={() => navigate('/') } className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive">Cancel</button>
                 </div>
             </form>
         </main>
