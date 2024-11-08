@@ -129,9 +129,6 @@ export const ContactUs = () => {
         ></iframe>
       </MapContainer>
         <div/>
-        <div>
-            <FooterWithLogo/>
-        </div>
     </div>
 )}
 

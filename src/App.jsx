@@ -10,7 +10,9 @@ import ContactUs from './components/ContactUs/Contactus.jsx';
 import MenuForm from './components/Menuform/Menuform.jsx';
 import Home from "./components/Home/Home.jsx"
 import ViewMenu from './components/ViewMenu/Viewmenu.jsx';
+import Footer from './components/Footer/Footer.jsx'
 import { index, Create , deleteMenu, update } from "./services/menuService.js"
+import "./index.css"
 const BASE_URL = `${import.meta.env.VITE_EXPRESS_BACKEND_URL}`;
 
 
@@ -116,6 +118,7 @@ const App = () => {
           <Route path="/users/signup" element={<Signup setToken={setToken}/>}/>
           <Route path="/users/signin" element={<Signin setToken={setToken}/>}/>
         </Routes>
+        <Footer/>
       </AuthedUserContext.Provider>
     </>
   );

@@ -149,7 +149,7 @@ const MenuForm = ({ handleAddMenu }) => {
                     <option value="APPETIZER">APPETIZER</option>
                     <option value="BANH MI">BANH MI</option>
                     <option value="SOUPS & SALADS">SOUPS & SALADS</option>
-                    <option value="Main">Main</option>
+                    <option value="MAIN">MAIN</option>
                     <option value="ENTREES">ENTREES</option>
                     <option value="PHO NOODLE SOUPS">PHO NOODLE SOUPS</option>
                     <option value="VIETNAMESE RICE PLATTERS">VIETNAMESE RICE PLATTERS</option>
@@ -157,7 +157,6 @@ const MenuForm = ({ handleAddMenu }) => {
                     <option value="V-BOWLS VERMICELLI">V-BOWLS VERMICELLI</option>
                     <option value="FRIED RICE">FRIED RICE</option>
                     <option value="SIDE">SIDE</option>
-                    <option value="MAIN">MAIN</option>
                     <option value="DRINK">DRINK</option>
                     <option value="RED WINE">RED WINE</option>
                     <option value="WHITE WINE">WHITE WINE</option>
@@ -166,11 +165,11 @@ const MenuForm = ({ handleAddMenu }) => {
                     <option value="HOUSE WINE">HOUSE WINE</option>
                     <option value="IMPORTED BEER">IMPORTED BEER</option>
                     <option value="SAKE">SAKE</option>
+                    <option value="DESSERT">DESSERT</option>
                     <option value="COCKTAIL">COCKTAIL</option>
                     <option value="CATERING">CATERING SOUP % ENTREE</option>
                   </select>
                 <input
-                    required
                     type="file"
                     name="foodImg"
                     id="foodImg-input"
@@ -179,9 +178,11 @@ const MenuForm = ({ handleAddMenu }) => {
                 />
 
                 {imagePreview && (
-                  <div>
-                    <img src={imagePreview} alt="Food Preview" style={{ width: '200px', height: 'auto' }} />
-                  </div>
+                    <img 
+                        src={imagePreview} 
+                        alt="" // Leave alt empty so no text appears
+                        style={{ width: '200px', height: 'auto' }} 
+                    />
                 )}
                 <button type="submit">Submit</button>
             </form>

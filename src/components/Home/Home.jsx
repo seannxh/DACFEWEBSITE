@@ -58,10 +58,6 @@ const Home = (props) => {
             </a>
           </div>
         </section>
-   
-        <footer>
-          <p>&copy; 2024 Don's Asian Cuisine. All Rights Reserved.</p>
-        </footer>
       </div>
     );
   };
