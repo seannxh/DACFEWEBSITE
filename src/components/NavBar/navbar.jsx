@@ -1,4 +1,4 @@
-import {Link} from 'react-router-dom';
+import {Link, Navigate} from 'react-router-dom';
 import { signout } from "../../services/authService"
 //link is a tage
 //usenavigation is a morel ike a hook that is attached to buttons
@@ -38,6 +38,7 @@ const NavBar = (props) => {
                             <Link onClick={() => {signout()
                             // when signed out it makes the token null
                                 props.setToken(null);
+                                Navigate('/home')
                             }}>
                                 Sign Out
                             </Link>
