@@ -34,6 +34,7 @@ const NavBar = (props) => {
                     <Link to="/menuform" className="hover:text-red-700 font-bold">Admin Form</Link>
                   )}
                   <Link
+                  to="/home"
                     onClick={handleSignOut}
                     className="hover:text-red-700 cursor-pointer font-bold"
                   >
