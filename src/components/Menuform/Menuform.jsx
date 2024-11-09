@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { index, Show, Create, CreateSuggestions , deleteMenu, update } from "../../services/menuService.js"
-
+import { useParams, useNavigate } from "react-router-dom";
+import { index, Show, Create, CreateSuggestions, deleteMenu, update } from "../../services/menuService.js";
+import ClipLoader from "react-spinners/ClipLoader"; // Import the spinner
 
 const MenuForm = ({ handleAddMenu }) => {
   const { menuId } = useParams();
-  const [imagePreview, setImagePreview] = useState(null)
+  const navigate = useNavigate();
+  const [imagePreview, setImagePreview] = useState(null);
   const [ingredientInput, setIngredientInput] = useState('');
   const [formData, setFormData] = useState({
     name: "",
@@ -13,17 +14,21 @@ const MenuForm = ({ handleAddMenu }) => {
     ingredients: [],
     foodImg: "",
     description: "",
-    dishType:""
+    dishType: ""
   });
+  const [loading, setLoading] = useState(false); // Loading state
 
   useEffect(() => {
     if (menuId) {
       const fetchTrack = async () => {
         try {
+          setLoading(true); // Set loading to true when fetching data
           const menuData = await Show(menuId);
           setFormData(menuData);
         } catch (err) {
           console.log(err);
+        } finally {
+          setLoading(false); // Set loading to false when done
         }
       };
       fetchTrack();
@@ -33,14 +38,14 @@ const MenuForm = ({ handleAddMenu }) => {
   const handleFileChange = (e) => {
     const getFile = e.target.files[0];
 
-      if(getFile){
-        setFormData({
-          ...formData,
-          foodImg: getFile,
-        })
-        const imageUrl = URL.createObjectURL(getFile);
-        setImagePreview(imageUrl)
-      }
+    if (getFile) {
+      setFormData({
+        ...formData,
+        foodImg: getFile,
+      });
+      const imageUrl = URL.createObjectURL(getFile);
+      setImagePreview(imageUrl);
+    }
   };
 
   const handleChange = (evt) => {
@@ -50,8 +55,9 @@ const MenuForm = ({ handleAddMenu }) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading to true when submitting form
   
     const data = new FormData();
     data.append("name", formData.name);
@@ -61,15 +67,22 @@ const MenuForm = ({ handleAddMenu }) => {
     data.append("dishType", formData.dishType);
     if (formData.foodImg) data.append("foodImg", formData.foodImg);
   
-    if (menuId) {
-      handleUpdateMenu(menuId, data);
-      console.log(menuId, data)
-    } else {
-      handleAddMenu(data);
+    try {
+      // Use async/await for handling form submission
+      if (menuId) {
+        await handleUpdateMenu(menuId, data);  // Wait for update to complete
+        console.log(menuId, data);
+      } else {
+        await handleAddMenu(data);  // Wait for adding new menu item to complete
+      }
+      console.log('form', formData);
+    } catch (error) {
+      console.error('Error while submitting form:', error);
+    } finally {
+      setLoading(false); // Set loading to false after submission completes (success or failure)
     }
-
-    console.log('form', formData)
   };
+  
 
   const handleIngredientAdd = () => {
     if (ingredientInput.trim() !== '') {
@@ -87,117 +100,123 @@ const MenuForm = ({ handleAddMenu }) => {
       ingredients: prevData.ingredients.filter((_, i) => i !== index)
     }));
   };
-  
 
-    return(
-        <main>
-          <h1 className="flex justify-center my-4 font-bold text-3xl sm:text-4xl">New Menu Item</h1>
-            <form onSubmit={handleSubmit} className="flex-col flex justify-center flex-wrap content-center">
+  return (
+    <main>
+      <h1 className="flex justify-center my-4 font-bold text-3xl sm:text-4xl">New Menu Item</h1>
 
-                <label htmlFor="name-input" className="justify-self-center ">Name</label>
-                <input 
-                    required
-                    type="text"
-                    name="name"
-                    id="name-input"
-                    value={formData.name}
-                    onChange={handleChange}                    
-                />
-                <br></br>
-                <label htmlFor="price-input">Price</label>
-                <input 
-                    required
-                    type="number"
-                    name="price"
-                    id="price-input"
-                    value={formData.price} 
-                    onChange={handleChange}                    
-                />
-                <br></br>
-                <label htmlFor="ingredients-input">Add Ingredient</label>
-                <input
-                  type="text"
-                  id="ingredients-input"
-                  value={ingredientInput}
-                  onChange={(e) => setIngredientInput(e.target.value)}
-                />
-                <button type="button" onClick={handleIngredientAdd} className=" mt-1 self-center pw-4 py-2 w-24 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive">
-                  Add Ingredient
-                </button>
-                <br />
-                <ul className="list-disc pl-5 space-y-2">
-                  {formData.ingredients.map((ingredient, index) => (
-                    <li key={index}>
-                      {ingredient} <button type="button" onClick={() => handleIngredientRemove(index)} className="self-center pw-4 py-1 w-20 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive">Remove</button>
-                    </li>
-                ))}
-                </ul>
-                <label htmlFor="description-input">Descriptions</label>
-                <input 
-                    required
-                    type="text"
-                    name="description"
-                    id="description-input"
-                    value={formData.description} 
-                    onChange={handleChange}                    
-                />
-                <br></br>
-                <label htmlFor="dishType-select">Dish Type</label>
-                <select
-                    required
-                    name="dishType"
-                    id="dishType-select"
-                    value={formData.dishType}
-                    onChange={handleChange}
-                  >
-                    <option value="">Select Dish Type</option>
-                    <option value="APPETIZER">APPETIZER</option>
-                    <option value="BANH MI">BANH MI</option>
-                    <option value="SOUPS & SALADS">SOUPS & SALADS</option>
-                    <option value="MAIN">MAIN</option>
-                    <option value="ENTREES">ENTREES</option>
-                    <option value="PHO NOODLE SOUPS">PHO NOODLE SOUPS</option>
-                    <option value="VIETNAMESE RICE PLATTERS">VIETNAMESE RICE PLATTERS</option>
-                    <option value="NOODLES">NOODLES</option>
-                    <option value="V-BOWLS VERMICELLI">V-BOWLS VERMICELLI</option>
-                    <option value="FRIED RICE">FRIED RICE</option>
-                    <option value="SIDE">SIDE</option>
-                    <option value="DRINK">DRINK</option>
-                    <option value="RED WINE">RED WINE</option>
-                    <option value="WHITE WINE">WHITE WINE</option>
-                    <option value="SPARKLING WINE">SPARKLING WINE</option>
-                    <option value="DOMESTIC BEER">DOMESTIC BEER</option>
-                    <option value="HOUSE WINE">HOUSE WINE</option>
-                    <option value="IMPORTED BEER">IMPORTED BEER</option>
-                    <option value="SAKE">SAKE</option>
-                    <option value="DESSERT">DESSERT</option>
-                    <option value="COCKTAIL">COCKTAIL</option>
-                    <option value="CATERING">CATERING SOUP % ENTREE</option>
-                  </select>
-                <br></br>
-                <input
-                    type="file"
-                    name="foodImg"
-                    id="foodImg-input"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                />
+      {/* Show loading spinner if loading is true */}
+      {loading ? (
+        <div className="flex justify-center items-center mb-4">
+          <ClipLoader color="#700000" loading={loading} size={50} />
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} className="flex-col flex justify-center flex-wrap content-center">
+          <label htmlFor="name-input" className="justify-self-center ">Name</label>
+          <input
+            required
+            type="text"
+            name="name"
+            id="name-input"
+            value={formData.name}
+            onChange={handleChange}
+          />
+          <br />
+          <label htmlFor="price-input">Price</label>
+          <input
+            required
+            type="number"
+            name="price"
+            id="price-input"
+            value={formData.price}
+            onChange={handleChange}
+          />
+          <br />
+          <label htmlFor="ingredients-input">Add Ingredient</label>
+          <input
+            type="text"
+            id="ingredients-input"
+            value={ingredientInput}
+            onChange={(e) => setIngredientInput(e.target.value)}
+          />
+          <button type="button" onClick={handleIngredientAdd} className="mt-1 self-center pw-4 py-2 w-24 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive">
+            Add Ingredient
+          </button>
+          <br />
+          <ul className="list-disc pl-5 space-y-2">
+            {formData.ingredients.map((ingredient, index) => (
+              <li key={index}>
+                {ingredient} <button type="button" onClick={() => handleIngredientRemove(index)} className="self-center pw-4 py-1 w-20 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive">Remove</button>
+              </li>
+            ))}
+          </ul>
+          <label htmlFor="description-input">Descriptions</label>
+          <input
+            required
+            type="text"
+            name="description"
+            id="description-input"
+            value={formData.description}
+            onChange={handleChange}
+          />
+          <br />
+          <label htmlFor="dishType-select">Dish Type</label>
+          <select
+            required
+            name="dishType"
+            id="dishType-select"
+            value={formData.dishType}
+            onChange={handleChange}
+          >
+            <option value="">Select Dish Type</option>
+            <option value="APPETIZER">APPETIZER</option>
+            <option value="BANH MI">BANH MI</option>
+            <option value="SOUPS & SALADS">SOUPS & SALADS</option>
+            <option value="MAIN">MAIN</option>
+            <option value="ENTREES">ENTREES</option>
+            <option value="PHO NOODLE SOUPS">PHO NOODLE SOUPS</option>
+            <option value="VIETNAMESE RICE PLATTERS">VIETNAMESE RICE PLATTERS</option>
+            <option value="NOODLES">NOODLES</option>
+            <option value="V-BOWLS VERMICELLI">V-BOWLS VERMICELLI</option>
+            <option value="FRIED RICE">FRIED RICE</option>
+            <option value="SIDE">SIDE</option>
+            <option value="DRINK">DRINK</option>
+            <option value="RED WINE">RED WINE</option>
+            <option value="WHITE WINE">WHITE WINE</option>
+            <option value="SPARKLING WINE">SPARKLING WINE</option>
+            <option value="DOMESTIC BEER">DOMESTIC BEER</option>
+            <option value="HOUSE WINE">HOUSE WINE</option>
+            <option value="IMPORTED BEER">IMPORTED BEER</option>
+            <option value="SAKE">SAKE</option>
+            <option value="DESSERT">DESSERT</option>
+            <option value="COCKTAIL">COCKTAIL</option>
+            <option value="CATERING">CATERING SOUP % ENTREE</option>
+          </select>
+          <br />
+          <input
+            type="file"
+            name="foodImg"
+            id="foodImg-input"
+            accept="image/*"
+            onChange={handleFileChange}
+          />
 
-                {imagePreview && (
-                    <img 
-                        src={imagePreview} 
-                        alt=""
-                        style={{ width: '200px', height: 'auto' }} 
-                    />
-                )}
-                <br></br>
-                <div className="self-center mb-2">
-                  <button type="submit" className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive mr-2">Submit</button>
-                  <button onClick={() => navigate('/') } className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive mr-2">Cancel</button>
-                </div>
-            </form>
-        </main>
-    )
+          {imagePreview && (
+            <img
+              src={imagePreview}
+              alt=""
+              style={{ width: '200px', height: 'auto' }}
+            />
+          )}
+          <br />
+          <div className="self-center mb-2">
+            <button type="submit" className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive mr-2">Submit</button>
+            <button onClick={() => navigate('/')} className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive mr-2">Cancel</button>
+          </div>
+        </form>
+      )}
+    </main>
+  );
 };
 
 export default MenuForm;

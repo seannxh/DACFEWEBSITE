@@ -1,10 +1,17 @@
-import { Link, Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { signout } from "../../services/authService";
 import logo from '../../assets/brandlogo.jpg';
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
 const NavBar = (props) => {
+  const navigate = useNavigate();
+  
+  const handleSignOut = () => {
+    signout();  // Sign out logic
+    props.setToken(null);  // Clear the token
+    navigate('/home');  // Redirect to the home page
+  };
   return (
     <Disclosure as="nav" className="bg-black text-white shadow-lg font-nova w-full">
       {({ open }) => (
@@ -20,29 +27,25 @@ const NavBar = (props) => {
             <div className="hidden custom-md:flex items-center space-x-10 text-2xl ml-auto pr-4">
               {props.token ? (
                 <>
-                  <Link to="/home" className="hover:text-red-500 font-bold">HOME</Link>
-                  <Link to="/viewmenu" className="hover:text-red-500 font-bold">MENU</Link>
-                  <Link to="/contactus" className="hover:text-red-500 font-bold">CONTACT</Link>
+                  <Link to="/home" className="hover:text-red-700 font-bold">Home</Link>
+                  <Link to="/viewmenu" className="hover:text-red-700 font-bold">Menu</Link>
+                  <Link to="/contactus" className="hover:text-red-700 font-bold">Contact</Link>
                   {props.isAdmin && (
-                    <Link to="/menuform" className="hover:text-red-500 font-bold">ADMIN FORM</Link>
+                    <Link to="/menuform" className="hover:text-red-700 font-bold">Admin Form</Link>
                   )}
                   <Link
-                    onClick={() => {
-                      signout();
-                      props.setToken(null);
-                      Navigate('/home');
-                    }}
-                    className="hover:text-red-500 cursor-pointer font-bold"
+                    onClick={handleSignOut}
+                    className="hover:text-red-700 cursor-pointer font-bold"
                   >
-                    SIGN OUT
+                    Sign Out
                   </Link>
                 </>
               ) : (
                 <>
-                  <Link to="/home" className="hover:text-red-500 font-bold">Home</Link>
-                  <Link to="/users/signup" className="hover:text-red-500 font-bold">Sign Up</Link>
-                  <Link to="/users/signin" className="hover:text-red-500 font-bold">Sign In</Link>
-                  <Link to="/contactus" className="hover:text-red-500 font-bold">Contact</Link>
+                  <Link to="/home" className="hover:text-red-700 font-bold">Home</Link>
+                  <Link to="/users/signup" className="hover:text-red-700 font-bold">Sign Up</Link>
+                  <Link to="/users/signin" className="hover:text-red-700 font-bold">Sign In</Link>
+                  <Link to="/contactus" className="hover:text-red-700 font-bold">Contact</Link>
                 </>
               )}
             </div>
@@ -58,29 +61,25 @@ const NavBar = (props) => {
             <div className="px-4 pb-3 space-y-2 text-white text-center">
               {props.token ? (
                 <>
-                  <Link to="/home" className="block hover:text-red-500 font-bold">Home</Link><hr/>
-                  <Link to="/viewmenu" className="block hover:text-red-500 font-bold">Menu</Link><hr/>
-                  <Link to="/contactus" className="block hover:text-red-500 font-bold">Contact</Link><hr/>
+                  <Link to="/home" className="block hover:text-red-700 font-bold">Home</Link><hr/>
+                  <Link to="/viewmenu" className="block hover:text-red-700 font-bold">Menu</Link><hr/>
+                  <Link to="/contactus" className="block hover:text-red-700 font-bold">Contact</Link><hr/>
                   {props.isAdmin && (
-                    <Link to="/menuform" className="block hover:text-red-500 font-bold">Admin Menu Form</Link>
+                    <Link to="/menuform" className="block hover:text-red-700 font-bold">Admin Menu Form</Link>
                   )}<hr/>
                   <Link
-                    onClick={() => {
-                      signout();
-                      props.setToken(null);
-                      Navigate('/home');
-                    }}
-                    className="block hover:text-red-500 cursor-pointer font-bold"
+                    onClick={handleSignOut}
+                    className="block hover:text-red-700 cursor-pointer font-bold"
                   >
                     Sign Out
                   </Link>
                 </>
               ) : (
                 <>
-                  <Link to="/home" className="block hover:text-red-500">Home</Link>
-                  <Link to="/users/signup" className="block hover:text-red-500">Sign Up</Link>
-                  <Link to="/users/signin" className="block hover:text-red-500">Sign In</Link>
-                  <Link to="/contactus" className="block hover:text-red-500">Contact</Link>
+                  <Link to="/home" className="block hover:text-red-700">Home</Link>
+                  <Link to="/users/signup" className="block hover:text-red-700">Sign Up</Link>
+                  <Link to="/users/signin" className="block hover:text-red-700">Sign In</Link>
+                  <Link to="/contactus" className="block hover:text-red-700">Contact</Link>
                 </>
               )}
             </div>

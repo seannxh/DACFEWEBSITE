@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signin, isAdmin } from '../../services/authService.js';
+import ClipLoader from "react-spinners/ClipLoader"; // Import the spinner
 
 const SignIn = (props) => {
     const navigate = useNavigate();
@@ -9,6 +10,7 @@ const SignIn = (props) => {
         password: ''
     });
     const [errMessage, setErrMessage] = useState('');
+    const [loading, setLoading] = useState(false); // Loading state
 
     const handleChange = (e) => {
         setFormData({
@@ -19,6 +21,7 @@ const SignIn = (props) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true); // Set loading to true when form is submitted
         try {
             const userResponse = await signin(formData);
             console.log("Response from signin:", userResponse);
@@ -26,9 +29,11 @@ const SignIn = (props) => {
 
             checkAdminStatus();
 
+            setLoading(false); // Set loading to false after successful signin
             navigate('/');
         } catch (err) {
             setErrMessage(err.message);
+            setLoading(false); // Set loading to false in case of error
         }
     };
 
@@ -46,40 +51,64 @@ const SignIn = (props) => {
     };
 
     return (
-        <main>
-            <h1 className="flex justify-center my-4 font-bold text-3xl sm:text-4xl">Sign In</h1>
-            <p>{errMessage}</p>
-            <form onSubmit={handleSubmit} className="flex-col flex justify-center flex-wrap content-center">
-                <div className='font-bold text-lg'>
-                    Username:
-                    <input
-                        className='ml-2'
-                        type="text"
-                        name="username"
-                        value={formData.username}
-                        onChange={handleChange}
-                    />
-                </div>
-                <br />
-                <div className='font-bold text-lg'>
-                    Password:
-                    <input
-                        className='ml-2'
-                        type="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                    />
-                </div>
-                <br />
-                <div className='self-center mb-2'>
-                    <button type="submit" disabled={isFormInvalid()} className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive mr-1">
-                        Sign In
-                    </button>
-                    <button onClick={handleSignUpRedirect} className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive mr-1">Sign Up</button>
-                    <button onClick={() => navigate('/') } className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive">Cancel</button>
-                </div>
-            </form>
+        <main className="flex justify-center items-center min-h-screen">
+            <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+                <h1 className="flex justify-center my-4 font-bold text-3xl sm:text-4xl font-cursive">Sign In</h1>
+                <p className="text-red-500 text-center">{errMessage}</p>
+
+                {/* Show loading spinner if loading is true */}
+                {loading ? (
+                    <div className="flex justify-center items-center mb-4">
+                        <ClipLoader color="#700000" loading={loading} size={50} />
+                    </div>
+                ) : (
+                    <form onSubmit={handleSubmit} className="flex-col flex justify-center flex-wrap content-center">
+                        <div className="font-bold text-lg mb-4 font-cursive">
+                            Username:
+                            <input
+                                className="ml-2 p-2 border border-gray-400 rounded w-full"
+                                type="text"
+                                name="username"
+                                value={formData.username}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div className="font-bold text-lg mb-4 font-cursive">
+                            Password:
+                            <input
+                                className="ml-2 p-2 border border-gray-400 rounded w-full"
+                                type="password"
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                            />
+                        </div>
+
+                        {/* Container for buttons */}
+                        <div className="flex justify-between gap-2 mt-4">
+                            <button
+                                type="submit"
+                                disabled={isFormInvalid()}
+                                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive w-1/3"
+                            >
+                                Sign In
+                            </button>
+                            <button
+                                onClick={handleSignUpRedirect}
+                                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive w-1/3"
+                            >
+                                Sign Up
+                            </button>
+                            <button
+                                onClick={() => navigate('/')}
+                                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive w-1/3"
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                )}
+            </div>
         </main>
     );
 };

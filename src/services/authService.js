@@ -1,5 +1,6 @@
 //function call to our backend
 import { jwtDecode } from "jwt-decode";
+import { Navigate } from "react-router-dom";
 
 const BACKEND_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
 
@@ -64,4 +65,5 @@ export const signin = async (formData) => {
 
 export const signout = () => {
     localStorage.removeItem('token');
+    Navigate("/home")
 }
