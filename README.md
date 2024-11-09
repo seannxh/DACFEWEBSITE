@@ -40,3 +40,13 @@ Clone this repository to your local machine:
 
 ```bash
 git clone https://github.com/yourusername/restaurant-website.git
+```
+
+### 2. Navigate to the project directory
+Cd into restaurant-website 
+
+### 3. Install
+Install the necessary dependencies by running: npm install
+
+### 4. Run The Project
+After the dependencies are installed, run the following command to start the project: npm start
