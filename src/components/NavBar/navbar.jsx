@@ -14,6 +14,7 @@ const handleSignOut = () => {
 };
 
 
+
   return (
     <Disclosure as="nav" className="bg-black text-white shadow-lg font-nova w-full">
       {({ open }) => (
