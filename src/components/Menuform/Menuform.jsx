@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { index, Show, Create, CreateSuggestions, deleteMenu, update } from "../../services/menuService.js";
-import ClipLoader from "react-spinners/ClipLoader"; // Import the spinner
+import ClipLoader from "react-spinners/ClipLoader"; 
 
 const MenuForm = ({ handleAddMenu }) => {
   const { menuId } = useParams();
@@ -16,19 +16,19 @@ const MenuForm = ({ handleAddMenu }) => {
     description: "",
     dishType: ""
   });
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false); 
 
   useEffect(() => {
     if (menuId) {
       const fetchTrack = async () => {
         try {
-          setLoading(true); // Set loading to true when fetching data
+          setLoading(true); 
           const menuData = await Show(menuId);
           setFormData(menuData);
         } catch (err) {
           console.log(err);
         } finally {
-          setLoading(false); // Set loading to false when done
+          setLoading(false);
         }
       };
       fetchTrack();
@@ -57,7 +57,7 @@ const MenuForm = ({ handleAddMenu }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); // Set loading to true when submitting form
+    setLoading(true); 
   
     const data = new FormData();
     data.append("name", formData.name);
@@ -68,18 +68,17 @@ const MenuForm = ({ handleAddMenu }) => {
     if (formData.foodImg) data.append("foodImg", formData.foodImg);
   
     try {
-      // Use async/await for handling form submission
       if (menuId) {
-        await handleUpdateMenu(menuId, data);  // Wait for update to complete
+        await handleUpdateMenu(menuId, data); 
         console.log(menuId, data);
       } else {
-        await handleAddMenu(data);  // Wait for adding new menu item to complete
+        await handleAddMenu(data);
       }
       console.log('form', formData);
     } catch (error) {
       console.error('Error while submitting form:', error);
     } finally {
-      setLoading(false); // Set loading to false after submission completes (success or failure)
+      setLoading(false); 
     }
   };
   
@@ -105,7 +104,7 @@ const MenuForm = ({ handleAddMenu }) => {
     <main>
       <h1 className="flex justify-center my-4 font-bold text-3xl sm:text-4xl">New Menu Item</h1>
 
-      {/* Show loading spinner if loading is true */}
+      
       {loading ? (
         <div className="flex justify-center items-center mb-4">
           <ClipLoader color="#700000" loading={loading} size={50} />

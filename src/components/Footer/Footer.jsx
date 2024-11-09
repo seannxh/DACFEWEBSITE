@@ -8,7 +8,6 @@ function FooterWithLogo() {
     <footer className="w-full bg-black text-white text-xs">
       <div className="flex flex-col md:flex-row md:justify-between items-center max-w-3xl mx-auto py-2 px-5 space-y-4 md:space-y-0">
 
-        {/* Contact Section */}
         <section className="text-left md:w-1/3">
           <h2 className="text-lg font-semibold mb-1">Contact Us</h2>
           <p>📌 <strong>Address:</strong> 2512 Rice Blvd, Houston, TX 77005</p>
@@ -16,7 +15,6 @@ function FooterWithLogo() {
           <p>📧 <strong>Email:</strong> customer@donsasiancuisine.com</p>
         </section>
 
-        {/* Social Media Section */}
         <section className="text-center md:w-1/3">
           <h2 className="text-lg font-semibold mb-1">Follow Us</h2>
           <div className="flex justify-center space-x-4 mt-3">
@@ -35,7 +33,6 @@ function FooterWithLogo() {
 
       <hr className="my-2 border-gray-700 w-full" />
 
-      {/* Footer Links */}
       <div className="flex flex-col items-center justify-center text-center gap-2 mb-2">
         <ul className="flex flex-wrap items-center justify-center gap-4 text-xs">
           <li>
@@ -81,7 +78,6 @@ function FooterWithLogo() {
         </ul>
       </div>
 
-      {/* Copyright */}
       <Typography color="white" className="text-center mt-1 mb-2">
         &copy; {new Date().getFullYear()} DON'S ASIAN CUISINE
       </Typography>

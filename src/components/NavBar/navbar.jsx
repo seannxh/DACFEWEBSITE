@@ -6,15 +6,12 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
 const NavBar = (props) => {
   const navigate = useNavigate();
-
-  // In your component
-const handleSignOut = () => {
-  signout(); // Perform signout logic in authService, but avoid hooks here
-  navigate('/'); // Perform navigation here in your component
-};
-
-
-
+  
+  const handleSignOut = () => {
+    signout(); 
+    props.setToken(null);  
+    navigate('/home');  
+  };
   return (
     <Disclosure as="nav" className="bg-black text-white shadow-lg font-nova w-full">
       {({ open }) => (
@@ -37,6 +34,7 @@ const handleSignOut = () => {
                     <Link to="/menuform" className="hover:text-red-700 font-bold">Admin Form</Link>
                   )}
                   <Link
+                  to="/home"
                     onClick={handleSignOut}
                     className="hover:text-red-700 cursor-pointer font-bold"
                   >

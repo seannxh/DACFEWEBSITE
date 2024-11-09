@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signin, isAdmin } from '../../services/authService.js';
-import ClipLoader from "react-spinners/ClipLoader"; // Import the spinner
+import ClipLoader from "react-spinners/ClipLoader"; 
 
 const SignIn = (props) => {
     const navigate = useNavigate();
@@ -10,7 +10,7 @@ const SignIn = (props) => {
         password: ''
     });
     const [errMessage, setErrMessage] = useState('');
-    const [loading, setLoading] = useState(false); // Loading state
+    const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
         setFormData({
@@ -21,7 +21,7 @@ const SignIn = (props) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true); // Set loading to true when form is submitted
+        setLoading(true); 
         try {
             const userResponse = await signin(formData);
             console.log("Response from signin:", userResponse);
@@ -29,11 +29,11 @@ const SignIn = (props) => {
 
             checkAdminStatus();
 
-            setLoading(false); // Set loading to false after successful signin
+            setLoading(false);
             navigate('/');
         } catch (err) {
             setErrMessage(err.message);
-            setLoading(false); // Set loading to false in case of error
+            setLoading(false);
         }
     };
 
@@ -56,7 +56,6 @@ const SignIn = (props) => {
                 <h1 className="flex justify-center my-4 font-bold text-3xl sm:text-4xl font-cursive">Sign In</h1>
                 <p className="text-red-500 text-center">{errMessage}</p>
 
-                {/* Show loading spinner if loading is true */}
                 {loading ? (
                     <div className="flex justify-center items-center mb-4">
                         <ClipLoader color="#700000" loading={loading} size={50} />
@@ -84,7 +83,6 @@ const SignIn = (props) => {
                             />
                         </div>
 
-                        {/* Container for buttons */}
                         <div className="flex justify-between gap-2 mt-4">
                             <button
                                 type="submit"

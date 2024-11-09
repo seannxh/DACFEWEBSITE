@@ -9,7 +9,7 @@ const ViewMenu = ({ handleDeleteMenu, isAdmin }) => {
     const [filterMenu, setFilteredMenu] = useState([]);
     const [editingMenuId, setEditingMenuId] = useState(null);
     const [editFormData, setEditFormData] = useState({});
-    const [fullScreenImage, setFullScreenImage] = useState(null); // New state for full-screen image
+    const [fullScreenImage, setFullScreenImage] = useState(null); 
 
     useEffect(() => {
         const fetchMenus = async () => {
@@ -102,11 +102,11 @@ const ViewMenu = ({ handleDeleteMenu, isAdmin }) => {
     };
 
     const handleImageClick = (imageUrl) => {
-        setFullScreenImage(imageUrl); // Set the image URL for full-screen view
+        setFullScreenImage(imageUrl); 
     };
 
     const closeModal = () => {
-        setFullScreenImage(null); // Close the modal by setting image to null
+        setFullScreenImage(null);
     };
 
     const renderMenuByDishType = (dishType) => {
@@ -174,14 +174,14 @@ const ViewMenu = ({ handleDeleteMenu, isAdmin }) => {
                                         <img
                                             src={`${BASE_URL}${menu.foodImg}`}
                                             alt=""
-                                            className="w-48 h-auto object-cover rounded-lg cursor-pointer" // Make cursor pointer to indicate clickability
-                                            onClick={() => handleImageClick(`${BASE_URL}${menu.foodImg}`)} // Open full-screen image on click
+                                            className="w-48 h-auto object-cover rounded-lg cursor-pointer" 
+                                        onClick={() => handleImageClick(`${BASE_URL}${menu.foodImg}`)} 
                                         />
                                     </div>
                                     {isAdmin && (
-                                        <div className="self-start mt-2">
-                                            <button onClick={() => handleEditClick(menu)} className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive mr-2">Edit</button>
-                                            <button onClick={() => handleDeleteMenu(menu._id)} className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive mr-2">Delete</button>
+                                        <div className="self-center mt-2">
+                                            <button onClick={() => handleEditClick(menu)} className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive ml-1 mr-2 mb-2">Edit</button>
+                                            <button onClick={() => handleDeleteMenu(menu._id)} className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive ml-1  mr-2">Delete</button>
                                         </div>
                                     )}
                                 </>
