@@ -42,19 +42,17 @@ const ViewMenu = ({ handleDeleteMenu, isAdmin }) => {
         const { name, value } = e.target;
         setEditFormData((prevData) => ({
             ...prevData,
-            [name]: value
+            [name]: value,
         }));
     };
 
     const handleFileChange = (e) => {
         const getFile = e.target.files[0];
-    
         if (getFile) {
             setEditFormData((prevData) => ({
                 ...prevData,
                 foodImg: getFile,
             }));
-    
             const imageUrl = URL.createObjectURL(getFile);
             setImagePreview(imageUrl);
         }
@@ -63,28 +61,27 @@ const ViewMenu = ({ handleDeleteMenu, isAdmin }) => {
     const handleChange = (e) => {
         const { value } = e.target;
         setSelectedDishType(value);
-
         if (value === "") {
             setFilteredMenu(menus);
         } else {
-            const filteredItems = menus.filter(menu => menu.dishType === value);
+            const filteredItems = menus.filter((menu) => menu.dishType === value);
             setFilteredMenu(filteredItems);
         }
     };
 
     const handleEditSubmit = async (e) => {
         e.preventDefault();
-    
+
         const data = new FormData();
         data.append("name", editFormData.name);
         data.append("description", editFormData.description);
         data.append("price", editFormData.price);
         data.append("dishType", editFormData.dishType);
-    
+
         if (editFormData.foodImg) {
             data.append("foodImg", editFormData.foodImg);
         }
-    
+
         try {
             const response = await fetch(`${BASE_URL}/menus/${editingMenuId}`, {
                 method: 'PUT',
@@ -93,19 +90,14 @@ const ViewMenu = ({ handleDeleteMenu, isAdmin }) => {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
             });
-            if (!response.ok) {
-                throw new Error('Error updating menu');
-            }
+            if (!response.ok) throw new Error('Error updating menu');
+            
             const updatedMenu = await response.json();
-            setMenus((prevMenus) => 
-                prevMenus.map((menu) =>
-                    menu._id === updatedMenu._id ? updatedMenu : menu
-                )
+            setMenus((prevMenus) =>
+                prevMenus.map((menu) => (menu._id === updatedMenu._id ? updatedMenu : menu))
             );
-            setFilteredMenu((prevMenus) => 
-                prevMenus.map((menu) =>
-                    menu._id === updatedMenu._id ? updatedMenu : menu
-                )
+            setFilteredMenu((prevMenus) =>
+                prevMenus.map((menu) => (menu._id === updatedMenu._id ? updatedMenu : menu))
             );
             setEditingMenuId(null);
         } catch (error) {
@@ -113,125 +105,102 @@ const ViewMenu = ({ handleDeleteMenu, isAdmin }) => {
         }
     };
 
-    return (
-        <div>
-            <label htmlFor="menus-select">View Menu</label>
-            <select
-                required
-                name="menus-select"
-                id="menus-select"
-                value={selectedDishType}
-                onChange={handleChange}
-            >
-                <option value="">View All</option>
-                <option value="APPETIZER">APPETIZER</option>
-                <option value="BANH MI">BANH MI</option>
-                <option value="SOUPS & SALADS">SOUPS & SALADS</option>
-                <option value="MAIN">MAIN</option>
-                <option value="ENTREES">ENTREES</option>
-                <option value="PHO NOODLE SOUPS">PHO NOODLE SOUPS</option>
-                <option value="VIETNAMESE RICE PLATTERS">VIETNAMESE RICE PLATTERS</option>
-                <option value="NOODLES">NOODLES</option>
-                <option value="V-BOWLS VERMICELLI">V-BOWLS VERMICELLI</option>
-                <option value="FRIED RICE">FRIED RICE</option>
-                <option value="SIDE">SIDE</option>
-                <option value="MAIN">MAIN</option>
-                <option value="DRINK">DRINK</option>
-                <option value="RED WINE">RED WINE</option>
-                <option value="WHITE WINE">WHITE WINE</option>
-                <option value="SPARKLING WINE">SPARKLING WINE</option>
-                <option value="DOMESTIC BEER">DOMESTIC BEER</option>
-                <option value="HOUSE WINE">HOUSE WINE</option>
-                <option value="IMPORTED BEER">IMPORTED BEER</option>
-                <option value="SAKE">SAKE</option>
-                <option value="DESSERT">DESSERT</option>
-                <option value="COCKTAIL">COCKTAIL</option>
-                <option value="CATERING">CATERING SOUP % ENTREE</option>
-            </select>
-            <div>
-                <h2>Welcome to our Menu!</h2>
-                {filterMenu.map(menu => (
-                    <div key={menu._id} style={{ borderBottom: '1px solid #ddd', paddingBottom: '10px', marginBottom: '10px' }}>
+    const renderMenuByDishType = (dishType) => {
+        const items = filterMenu.filter((menu) => menu.dishType === dishType);
+        if (items.length === 0) return null;
+
+        return (
+            <div key={dishType}>
+                <h3 className="flex justify-center my-4 font-bold text-3xl sm:text-2xl text-red-600">{dishType}</h3>
+                {items.map((menu) => (
+                    <div key={menu._id} style={{ borderBottom: '1px solid #ddd', padding: '10px 0' }} className="flex-col flex justify-center flex-wrap content-center">
                         {editingMenuId === menu._id ? (
-                            <>
-                                <h2>Edit Menu</h2>
-                                <form onSubmit={handleEditSubmit}>
-                                    <input
-                                        type="text"
-                                        name="name"
-                                        value={editFormData.name}
-                                        onChange={handleFormChange}
-                                        placeholder="Name"
-                                    /><br />
-                                    <textarea
-                                        name="description"
-                                        value={editFormData.description}
-                                        onChange={handleFormChange}
-                                        placeholder="Description"
-                                        rows="4"
-                                        cols="50"
-                                    ></textarea><br />
-                                    <input
-                                        type="number"
-                                        name="price"
-                                        value={editFormData.price}
-                                        onChange={handleFormChange}
-                                        placeholder="Price"
-                                    /><br />
-                                    <label htmlFor="foodImg-input">Food Image</label>
-                                    <input
-                                        type="file"
-                                        name="foodImg"
-                                        id="foodImg-input"
-                                        onChange={handleFileChange}
-                                    /><br />
-                                    {imagePreview && (
-                                        <img 
-                                            src={imagePreview} 
-                                            alt=""
-                                            style={{ width: '200px', height: 'auto' }} 
-                                        />
-                                    )}
-                                    <button type="submit">Save</button><br />
-                                    <button type="button" onClick={() => setEditingMenuId(null)}>
-                                        Cancel
-                                    </button>
-                                </form>
-                            </>
+                            <form onSubmit={handleEditSubmit} className="flex-col flex justify-center flex-wrap content-center">
+                                <input
+                                    type="text"
+                                    name="name"
+                                    value={editFormData.name}
+                                    onChange={handleFormChange}
+                                    placeholder="Name"
+                                /><br />
+                                <textarea
+                                    name="description"
+                                    value={editFormData.description}
+                                    onChange={handleFormChange}
+                                    placeholder="Description"
+                                ></textarea><br />
+                                <input
+                                    type="number"
+                                    name="price"
+                                    value={editFormData.price}
+                                    onChange={handleFormChange}
+                                    placeholder="Price"
+                                /><br />
+                                <input
+                                    type="file"
+                                    name="foodImg"
+                                    onChange={handleFileChange}
+                                /><br />
+                                {imagePreview && (
+                                    <img src={imagePreview} alt="" style={{ width: '200px' }} />
+                                )}
+                                <div className="self-center mb-2">
+                                    <button type="submit" className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive mr-2">Save</button>
+                                    <button type="button" onClick={() => setEditingMenuId(null)} className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive mr-2">Cancel</button>
+                                </div>
+                            </form>
                         ) : (
                             <>
-                                <h4>{menu.name}</h4>
-                                <p>Description: {menu.description}</p>
-                                <p>Price: ${menu.price}</p>
-                                <img src={`${BASE_URL}${menu.foodImg}`} alt ="" style={{ width: '200px', height: 'auto' }} />
-                                <br /><br />
-                                Ingredients:
-                                <div>
-                                    {Array.isArray(menu.ingredients) ? (
-                                        menu.ingredients.map((ingredient, index) => (
-                                            <p key={index}>{ingredient}</p>
-                                        ))
-                                    ) : (
-                                        <p>No ingredients available</p>
-                                    )}
-                                </div>
-                                <div>
-                                    {isAdmin && (
-                                        <>
-                                            <button onClick={() => handleEditClick(menu)}>
-                                                Edit
-                                            </button>
-                                            <button onClick={() => handleDeleteMenu(menu._id)}>
-                                                Delete
-                                            </button>
-                                        </>
-                                    )}
-                                </div>
+                                <h4 className="flex justify-center my-4 font-bold text-xl sm:text-xl ">{menu.name}</h4>
+                                <p className="flex flex-wrap justify-center my-4 text-m max-w-xl ">{menu.description}</p>
+                                <p className="flex flex-wrap justify-center my-4 text-m max-w-xl ">Price: ${menu.price}</p>
+                                <img src={`${BASE_URL}${menu.foodImg}`} alt="" style={{ width: '200px' }} /><br />
+                                {isAdmin && (
+                                    <div className="self-center mb-2">
+                                        <button onClick={() => handleEditClick(menu)} className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive mr-2">Edit</button>
+                                        <button onClick={() => handleDeleteMenu(menu._id)} className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive mr-2">Delete</button>
+                                    </div>
+                                )}
                             </>
                         )}
                     </div>
                 ))}
             </div>
+        );
+    };
+
+    const dishTypes = [
+        "APPETIZER", "BANH MI", "SOUPS & SALADS", "MAIN", "ENTREES",
+        "PHO NOODLE SOUPS", "VIETNAMESE RICE PLATTERS", "NOODLES",
+        "V-BOWLS VERMICELLI", "FRIED RICE", "SIDE", "DRINK", "RED WINE",
+        "WHITE WINE", "SPARKLING WINE", "DOMESTIC BEER", "HOUSE WINE",
+        "IMPORTED BEER", "SAKE", "DESSERT", "COCKTAIL", "CATERING"
+    ];
+
+    return (
+        <div className="flex flex-col items-center my-6">
+            <label
+                htmlFor="menus-select"
+                className="font-bold text-3xl sm:text-2xl text-red-600 mb-4"
+            >
+                View Menu
+            </label>
+            <div className="flex justify-center mb-8">
+                <select
+                    value={selectedDishType}
+                    onChange={handleChange}
+                    className="border border-gray-300 p-2 rounded text-center"
+                >
+                    <option value="">View All</option>
+                    {dishTypes.map((type) => (
+                        <option key={type} value={type}>
+                            {type}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            <h2 className="font-bold text-5xl sm:text-2xl mb-6">Our Menu</h2>
+            {dishTypes.map((type) => renderMenuByDishType(type))}
         </div>
     );
 };
