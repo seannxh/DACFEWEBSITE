@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signup } from "../../services/authService.js";
-import ClipLoader from "react-spinners/ClipLoader"; // Import the loading spinner
+import ClipLoader from "react-spinners/ClipLoader"; 
 
 const SignUp = (props) => {
     const navigate = useNavigate();
@@ -11,7 +11,7 @@ const SignUp = (props) => {
         passwordConfirm: "",
     });
     const [errMessage, setErrMessage] = useState('');
-    const [loading, setLoading] = useState(false); // Add loading state
+    const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
         setFormData({
@@ -22,7 +22,7 @@ const SignUp = (props) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true); // Set loading to true before making the API request
+        setLoading(true); 
         try {
             const userData = await signup(formData);
             console.log(userData);
@@ -31,7 +31,7 @@ const SignUp = (props) => {
         } catch (err) {
             setErrMessage(err.message);
         } finally {
-            setLoading(false); // Set loading to false after the API request completes
+            setLoading(false);
         }
     };
 
@@ -53,7 +53,7 @@ const SignUp = (props) => {
                 <h1 className="flex justify-center my-4 font-bold text-3xl sm:text-4xl font-cursive">Sign Up</h1>
                 <p className="text-red-500 text-center">{errMessage}</p>
 
-                {/* Show loading spinner if loading is true */}
+                
                 {loading ? (
                     <div className="flex justify-center items-center mb-4">
                         <ClipLoader color="#700000" loading={loading} size={50} />
@@ -91,11 +91,11 @@ const SignUp = (props) => {
                             />
                         </div>
 
-                        {/* Container for buttons */}
+                        
                         <div className="flex justify-center gap-2 mt-4">
                             <button
                                 type="submit"
-                                disabled={isFormInvalid() || loading} // Disable button when loading
+                                disabled={isFormInvalid() || loading}
                                 className="px-4 py-1 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive w-1/3"
                             >
                                 Sign Up

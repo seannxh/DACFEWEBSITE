@@ -27,7 +27,6 @@ export const ContactUs = () => {
       <div className="bg-gray-100 p-6 rounded-lg shadow-lg max-w-xl w-full text-center">
         <h2 className="text-3xl font-bold font-cursive mb-4">Contact Us</h2>
 
-        {/* Contact Information Container */}
         <div className="bg-white p-4 rounded-lg shadow-md mb-4">
           <section className="font-semibold text-gray-700">
             <p>📌 Address: 2512 Rice Blvd, Houston, TX 77005</p>

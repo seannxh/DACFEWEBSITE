@@ -100,7 +100,6 @@ const Home = (props) => {
                 HOURS
               </button>
 
-              {/* Hours Pop-up */}
               {showHours && (
                 <div className=" absolute top-20 left-1/2 transform -translate-x-1/2 w-64 p-4 text-white rounded-lg shadow-lg z-30 border border-gray-300">
                   <h3 className="text-lg font-bold mb-2">Operating Hours</h3>

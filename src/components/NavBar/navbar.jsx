@@ -8,9 +8,9 @@ const NavBar = (props) => {
   const navigate = useNavigate();
   
   const handleSignOut = () => {
-    signout();  // Sign out logic
-    props.setToken(null);  // Clear the token
-    navigate('/home');  // Redirect to the home page
+    signout(); 
+    props.setToken(null);  
+    navigate('/home');  
   };
   return (
     <Disclosure as="nav" className="bg-black text-white shadow-lg font-nova w-full">
