@@ -6,12 +6,14 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
 const NavBar = (props) => {
   const navigate = useNavigate();
-  
-  const handleSignOut = () => {
-    signout();  // Sign out logic
-    props.setToken(null);  // Clear the token
-    navigate('/home');  // Redirect to the home page
-  };
+
+  // In your component
+const handleSignOut = () => {
+  signout(); // Perform signout logic in authService, but avoid hooks here
+  navigate('/'); // Perform navigation here in your component
+};
+
+
   return (
     <Disclosure as="nav" className="bg-black text-white shadow-lg font-nova w-full">
       {({ open }) => (
@@ -61,12 +63,12 @@ const NavBar = (props) => {
             <div className="px-4 pb-3 space-y-2 text-white text-center">
               {props.token ? (
                 <>
-                  <Link to="/home" className="block hover:text-red-700 font-bold">Home</Link><hr/>
-                  <Link to="/viewmenu" className="block hover:text-red-700 font-bold">Menu</Link><hr/>
-                  <Link to="/contactus" className="block hover:text-red-700 font-bold">Contact</Link><hr/>
+                  <Link to="/home" className="block hover:text-red-700 font-bold">Home</Link><hr />
+                  <Link to="/viewmenu" className="block hover:text-red-700 font-bold">Menu</Link><hr />
+                  <Link to="/contactus" className="block hover:text-red-700 font-bold">Contact</Link><hr />
                   {props.isAdmin && (
                     <Link to="/menuform" className="block hover:text-red-700 font-bold">Admin Menu Form</Link>
-                  )}<hr/>
+                  )}<hr />
                   <Link
                     onClick={handleSignOut}
                     className="block hover:text-red-700 cursor-pointer font-bold"
