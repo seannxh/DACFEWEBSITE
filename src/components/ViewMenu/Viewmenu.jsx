@@ -179,9 +179,9 @@ const ViewMenu = ({ handleDeleteMenu, isAdmin }) => {
                                         />
                                     </div>
                                     {isAdmin && (
-                                        <div className="self-start mt-2">
-                                            <button onClick={() => handleEditClick(menu)} className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive mr-2">Edit</button>
-                                            <button onClick={() => handleDeleteMenu(menu._id)} className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive mr-2">Delete</button>
+                                        <div className="self-center mt-2">
+                                            <button onClick={() => handleEditClick(menu)} className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive ml-1 mr-2 mb-2">Edit</button>
+                                            <button onClick={() => handleDeleteMenu(menu._id)} className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive ml-1  mr-2">Delete</button>
                                         </div>
                                     )}
                                 </>
