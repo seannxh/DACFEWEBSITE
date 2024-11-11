@@ -79,7 +79,7 @@ function FooterWithLogo() {
       </div>
 
       <Typography color="white" className="text-center mt-1 mb-2">
-        &copy; {new Date().getFullYear()} DON'S ASIAN CUISINE
+        &copy; {new Date().getFullYear()} Don's Asian Cuisine. All Rights Reserved.
       </Typography>
     </footer>
   );
