@@ -99,7 +99,6 @@ const App = () => {
                   <>
                     <Route path="/home" element={<Home token={token} />} />
                     <Route path="/" element={<Navigate to="/home" replace />} />
-                    <Route path="/home" element={<Home token={token}/>}/>
                     <Route path="/menuform" element={<AdminRoute isAdmin={adminStatus} setAdminStatus={setAdminStatus}><MenuForm handleUpdateMenu={handleUpdateMenu} handleAddMenu={handleAddMenu} /></AdminRoute>} />
                     <Route path="/viewmenu" element={<ViewMenu handleDeleteMenu={handleDeleteMenu} handleUpdateMenu={handleUpdateMenu} isAdmin={adminStatus} setAdminStatus={setAdminStatus} />} />
                     <Route path="/contactus" element={<ContactUs />} />
