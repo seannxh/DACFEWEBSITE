@@ -10,7 +10,7 @@ import MenuForm from './components/Menuform/Menuform.jsx';
 import Home from "./components/Home/Home.jsx"
 import ViewMenu from './components/ViewMenu/Viewmenu.jsx';
 import Footer from './components/Footer/Footer.jsx'
-import { index, Create, deleteMenu, update } from "./services/menuService.js"
+import { index, deleteMenu, update } from "./services/menuService.js"
 import "./index.css"
 const BASE_URL = `${import.meta.env.VITE_EXPRESS_BACKEND_URL}`;
 
@@ -98,7 +98,7 @@ const App = () => {
                 {token ? (
                   <>
                     <Route path="/home" element={<Home token={token} />} />
-                    <Route path="/" element={<Navigate to="/home" replace />} />
+                    <Route path="/" element={<Navigate to="/home" />} />
                     <Route path="/menuform" element={<AdminRoute isAdmin={adminStatus} setAdminStatus={setAdminStatus}><MenuForm handleUpdateMenu={handleUpdateMenu} handleAddMenu={handleAddMenu} /></AdminRoute>} />
                     <Route path="/viewmenu" element={<ViewMenu handleDeleteMenu={handleDeleteMenu} handleUpdateMenu={handleUpdateMenu} isAdmin={adminStatus} setAdminStatus={setAdminStatus} />} />
                     <Route path="/contactus" element={<ContactUs />} />
