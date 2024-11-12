@@ -2,7 +2,6 @@ import { useState, useEffect, createContext } from "react";
 import { Route, Routes, useNavigate, Navigate } from "react-router-dom";
 import Signup from "./components/Signup/signup.jsx";
 import Signin from "./components/Signin/signin.jsx";
-import { getUser, isAdmin } from "./services/authService.js";
 import AdminRoute from "./components/Protects/AdminRoute.jsx";
 import NavBar from "./components/NavBar/navbar.jsx";
 import ContactUs from "./components/ContactUs/Contactus.jsx";
@@ -11,10 +10,9 @@ import AboutUs from "./components/Footer/about.jsx";
 import Home from "./components/Home/Home.jsx";
 import ViewMenu from "./components/ViewMenu/Viewmenu.jsx";
 import Footer from "./components/Footer/Footer.jsx";
-import { index, deleteMenu, update } from "./services/menuService.js";
-import "./index.css";
 import PrivacyPolicy from "./components/Footer/privacypolicy.jsx";
-const BASE_URL = `${import.meta.env.VITE_EXPRESS_BACKEND_URL}`;
+import { getUser, isAdmin } from "./services/authService.js";
+import "./index.css";
 
 const App = () => {
   const [token, setToken] = useState(getUser());
@@ -24,8 +22,8 @@ const App = () => {
   const navigate = useNavigate();
   const AuthedUserContext = createContext(null);
 
-  // Fetch menus and set loading state
   useEffect(() => {
+    // Fetch menus and set loading state
     const fetchMenus = async () => {
       setLoading(true);
       try {
@@ -37,6 +35,7 @@ const App = () => {
         setLoading(false);
       }
     };
+
     if (token) setAdminStatus(isAdmin());
     fetchMenus();
   }, [token]);
@@ -67,7 +66,7 @@ const App = () => {
       setMenus(menus.filter((menu) => menu._id !== menuId));
       navigate("/viewmenu");
     } catch (err) {
-      console.error("Error Adding Item:", err);
+      console.error("Error deleting item:", err);
     }
   };
 
@@ -87,78 +86,40 @@ const App = () => {
       setMenus(updatedMenus);
       navigate("/viewmenu");
     } catch (err) {
-      console.error("Error updating track:", err);
+      console.error("Error updating menu:", err);
     }
   };
 
   return (
     <div className="flex flex-col min-h-screen">
-      {" "}
-      {/* Full height flex layout */}
       <AuthedUserContext.Provider value={token}>
-        <NavBar
-          token={token}
-          setToken={setToken}
-          isAdmin={adminStatus}
-          setAdminStatus={setAdminStatus}
-        />
+        <NavBar token={token} setToken={setToken} isAdmin={adminStatus} setAdminStatus={setAdminStatus} />
         <main className="flex-grow">
-          {" "}
-          {/* Ensures the content grows to take available space */}
           <Routes>
-            {token ? (
-              <>
-                <Route path="/home" element={<Home token={token} />} />
-                <Route path="/" element={<Navigate to="/home" />} />
-                <Route
-                  path="/menuform"
-                  element={
-                    <AdminRoute
-                      isAdmin={adminStatus}
-                      setAdminStatus={setAdminStatus}
-                    >
-                      <MenuForm
-                        handleUpdateMenu={handleUpdateMenu}
-                        handleAddMenu={handleAddMenu}
-                      />
-                    </AdminRoute>
-                  }
-                />
-                <Route
-                  path="/viewmenu"
-                  element={
-                    <ViewMenu
-                      handleDeleteMenu={handleDeleteMenu}
-                      handleUpdateMenu={handleUpdateMenu}
-                      isAdmin={adminStatus}
-                      setAdminStatus={setAdminStatus}
-                    />
-                  }
-                />
-                <Route path="/contactus" element={<ContactUs />} />
-                <Route path="/about" element={<AboutUs />} />
-                <Route path="/privacypolicy" element={<PrivacyPolicy />} />
-              </>
-            ) : (
-              <>
-                <Route path="/home" element={<Home />} />
-                <Route path="/" element={<Navigate to="/home" replace />} />
-                <Route path="/contactus" element={<ContactUs />} />
-                <Route path="/privacypolicy" element={<PrivacyPolicy />} />
-                <Route path="/about" element={<AboutUs />} />
-              </>
-            )}
+            {/* Public routes */}
+            <Route path="/home" element={<Home />} />
+            <Route path="/" element={<Navigate to="/home" replace />} />
+            <Route path="/viewmenu" element={<ViewMenu isAdmin={adminStatus} />} />
+            <Route path="/contactus" element={<ContactUs />} />
+            <Route path="/about" element={<AboutUs />} />
+            <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+            
+            {/* Admin routes */}
             <Route
-              path="/users/signup"
-              element={<Signup setToken={setToken} />}
+              path="/menuform"
+              element={
+                <AdminRoute isAdmin={adminStatus}>
+                  <MenuForm handleAddMenu={handleAddMenu} handleUpdateMenu={handleUpdateMenu} />
+                </AdminRoute>
+              }
             />
-            <Route
-              path="/users/signin"
-              element={<Signin setToken={setToken} />}
-            />
+
+            {/* Auth routes */}
+            <Route path="/users/signup" element={<Signup setToken={setToken} />} />
+            <Route path="/users/adminlogin" element={<Signin setToken={setToken} />} />
           </Routes>
         </main>
-        <Footer /> {/* Footer stays at the bottom */}
+        <Footer />
       </AuthedUserContext.Provider>
     </div>
   );

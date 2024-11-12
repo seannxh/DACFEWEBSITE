@@ -54,7 +54,7 @@ const SignIn = (props) => {
     <main className="flex justify-center items-center min-h-screen">
       <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
         <h1 className="flex justify-center my-4 font-bold text-3xl sm:text-4xl font-cursive">
-          Sign In
+          Admin Log In
         </h1>
         <p className="text-red-500 text-center">{errMessage}</p>
 

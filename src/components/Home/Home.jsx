@@ -33,11 +33,7 @@ const Home = (props) => {
   ];
 
   const handleMenuClick = () => {
-    if (props.token) {
       navigate("/viewmenu");
-    } else {
-      navigate("/users/signup");
-    }
   };
 
   const handleHoursClick = () => {
