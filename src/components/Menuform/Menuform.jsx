@@ -1,28 +1,30 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { index, Show, Create, CreateSuggestions, deleteMenu, update } from "../../services/menuService.js";
-import ClipLoader from "react-spinners/ClipLoader"; 
+import {
+  Show,
+} from "../../services/menuService.js";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const MenuForm = ({ handleAddMenu }) => {
   const { menuId } = useParams();
   const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState(null);
-  const [ingredientInput, setIngredientInput] = useState('');
+  const [ingredientInput, setIngredientInput] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     price: "",
     ingredients: [],
     foodImg: "",
     description: "",
-    dishType: ""
+    dishType: "",
   });
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (menuId) {
       const fetchTrack = async () => {
         try {
-          setLoading(true); 
+          setLoading(true);
           const menuData = await Show(menuId);
           setFormData(menuData);
         } catch (err) {
@@ -57,8 +59,8 @@ const MenuForm = ({ handleAddMenu }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); 
-  
+    setLoading(true);
+
     const data = new FormData();
     data.append("name", formData.name);
     data.append("price", formData.price);
@@ -66,52 +68,57 @@ const MenuForm = ({ handleAddMenu }) => {
     data.append("description", formData.description);
     data.append("dishType", formData.dishType);
     if (formData.foodImg) data.append("foodImg", formData.foodImg);
-  
+
     try {
       if (menuId) {
-        await handleUpdateMenu(menuId, data); 
+        await handleUpdateMenu(menuId, data);
         console.log(menuId, data);
       } else {
         await handleAddMenu(data);
       }
-      console.log('form', formData);
+      console.log("form", formData);
     } catch (error) {
-      console.error('Error while submitting form:', error);
+      console.error("Error while submitting form:", error);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
-  
 
   const handleIngredientAdd = () => {
-    if (ingredientInput.trim() !== '') {
+    if (ingredientInput.trim() !== "") {
       setFormData((prevData) => ({
         ...prevData,
-        ingredients: [...prevData.ingredients, ingredientInput.trim()]
+        ingredients: [...prevData.ingredients, ingredientInput.trim()],
       }));
-      setIngredientInput('');
+      setIngredientInput("");
     }
   };
 
   const handleIngredientRemove = (index) => {
     setFormData((prevData) => ({
       ...prevData,
-      ingredients: prevData.ingredients.filter((_, i) => i !== index)
+      ingredients: prevData.ingredients.filter((_, i) => i !== index),
     }));
   };
 
   return (
     <main>
-      <h1 className="flex justify-center my-4 font-bold text-3xl sm:text-4xl">New Menu Item</h1>
+      <h1 className="flex justify-center my-4 font-bold text-3xl sm:text-4xl">
+        New Menu Item
+      </h1>
 
-      
       {loading ? (
         <div className="flex justify-center items-center mb-4">
           <ClipLoader color="#700000" loading={loading} size={50} />
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="flex-col flex justify-center flex-wrap content-center">
-          <label htmlFor="name-input" className="justify-self-center ">Name</label>
+        <form
+          onSubmit={handleSubmit}
+          className="flex-col flex justify-center flex-wrap content-center"
+        >
+          <label htmlFor="name-input" className="justify-self-center ">
+            Name
+          </label>
           <input
             required
             type="text"
@@ -138,14 +145,25 @@ const MenuForm = ({ handleAddMenu }) => {
             value={ingredientInput}
             onChange={(e) => setIngredientInput(e.target.value)}
           />
-          <button type="button" onClick={handleIngredientAdd} className="mt-1 self-center pw-4 py-2 w-24 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive">
+          <button
+            type="button"
+            onClick={handleIngredientAdd}
+            className="mt-1 self-center pw-4 py-2 w-24 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive"
+          >
             Add Ingredient
           </button>
           <br />
           <ul className="list-disc pl-5 space-y-2">
             {formData.ingredients.map((ingredient, index) => (
               <li key={index}>
-                {ingredient} <button type="button" onClick={() => handleIngredientRemove(index)} className="self-center pw-4 py-1 w-20 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive">Remove</button>
+                {ingredient}{" "}
+                <button
+                  type="button"
+                  onClick={() => handleIngredientRemove(index)}
+                  className="self-center pw-4 py-1 w-20 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive"
+                >
+                  Remove
+                </button>
               </li>
             ))}
           </ul>
@@ -174,7 +192,9 @@ const MenuForm = ({ handleAddMenu }) => {
             <option value="MAIN">MAIN</option>
             <option value="ENTREES">ENTREES</option>
             <option value="PHO NOODLE SOUPS">PHO NOODLE SOUPS</option>
-            <option value="VIETNAMESE RICE PLATTERS">VIETNAMESE RICE PLATTERS</option>
+            <option value="VIETNAMESE RICE PLATTERS">
+              VIETNAMESE RICE PLATTERS
+            </option>
             <option value="NOODLES">NOODLES</option>
             <option value="V-BOWLS VERMICELLI">V-BOWLS VERMICELLI</option>
             <option value="FRIED RICE">FRIED RICE</option>
@@ -204,13 +224,23 @@ const MenuForm = ({ handleAddMenu }) => {
             <img
               src={imagePreview}
               alt=""
-              style={{ width: '200px', height: 'auto' }}
+              style={{ width: "200px", height: "auto" }}
             />
           )}
           <br />
           <div className="self-center mb-2">
-            <button type="submit" className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive mr-2">Submit</button>
-            <button onClick={() => navigate('/')} className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive mr-2">Cancel</button>
+            <button
+              type="submit"
+              className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive mr-2"
+            >
+              Submit
+            </button>
+            <button
+              onClick={() => navigate("/")}
+              className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 font-cursive mr-2"
+            >
+              Cancel
+            </button>
           </div>
         </form>
       )}

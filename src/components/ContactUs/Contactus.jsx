@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import emailjs from '@emailjs/browser';
+import React, { useRef } from "react";
+import emailjs from "@emailjs/browser";
 
 export const ContactUs = () => {
   const form = useRef();
@@ -8,17 +8,17 @@ export const ContactUs = () => {
     e.preventDefault();
 
     emailjs
-      .sendForm('service_x9p1m6d', 'template_11ni011', form.current, {
-        publicKey: 'wdB1IvZQVrkij5h20',
+      .sendForm("service_x9p1m6d", "template_11ni011", form.current, {
+        publicKey: "wdB1IvZQVrkij5h20",
       })
       .then(
         () => {
-          console.log('SUCCESS!');
+          console.log("SUCCESS!");
           form.current.reset();
         },
         (error) => {
-          console.log('FAILED...', error.text);
-        },
+          console.log("FAILED...", error.text);
+        }
       );
   };
 
@@ -36,8 +36,11 @@ export const ContactUs = () => {
         </div>
 
         <p className="font-cursive text-center mb-6">
-          Please feel free to contact us for any questions, concerns, or feedback!<br/>
-          We are ALWAYS looking to help and strengthen our time together with you!
+          Please feel free to contact us for any questions, concerns, or
+          feedback!
+          <br />
+          We are ALWAYS looking to help and strengthen our time together with
+          you!
         </p>
 
         <form ref={form} onSubmit={sendEmail} className="flex flex-col gap-4">

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
-import { RxDotFilled } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
 
 const Home = (props) => {
@@ -9,8 +8,6 @@ const Home = (props) => {
   const [showHours, setShowHours] = useState(false);
   const background =
     "https://png.pngtree.com/thumb_back/fw800/background/20240405/pngtree-asian-food-background-with-various-ingredients-on-rustic-stone-image_15700116.jpg";
-  const bottombackground =
-    "https://png.pngtree.com/thumb_back/fw800/background/20231222/pngtree-white-paper-texture-background-image_15528216.jpg";
   const slides = [
     {
       url: "https://lh3.googleusercontent.com/p/AF1QipNVn_VP2Wkr-jCleqeH4Mdxaebxy9LnlG33A8m3=s680-w680-h510",

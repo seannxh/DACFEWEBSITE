@@ -2,9 +2,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* index.css */
+
 html, body {
     height: 100%;
     margin: 0;
     padding: 0;
+  }
+
+  .white-outline {
+    box-shadow: 0 0 0 3px white;
   }
